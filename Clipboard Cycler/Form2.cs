@@ -12,12 +12,12 @@ using Microsoft.VisualStudio;
 
 namespace Clipboard_Cycler
 {
-    public partial class Form1 : Form
+    public partial class Form2 : Form
     {
-        public Form1()
+        public Form2()
         {
             InitializeComponent();
-            cycleOnlyToolStripMenuItem.Checked = true;
+            cycleWFunctionsToolStripMenuItem.Checked = true;
             useClipboardPasteToolStripMenuItem.Checked = Program.allSettings.UseClipboard;
             useClipboardPasteToolStripMenuItem.Checked = !Program.allSettings.UseClipboard;
         }
@@ -29,12 +29,12 @@ namespace Clipboard_Cycler
 
         private void CycleOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Actions.SetForm(1);
+            Actions.SetForm(1);
         }
 
         private void CycleWFunctionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Actions.SetForm(2);
+            //Program.SetForm(1);
         }
 
         private void FunctionsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -49,19 +49,16 @@ namespace Clipboard_Cycler
 
         private void UseClipboardPasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UsingClipboard(true);
+            Program.allSettings.UseClipboard = true;
+            useClipboardPasteToolStripMenuItem.Checked = true;
+            useSendKeysToolStripMenuItem.Checked = false;
         }
 
         private void UseSendKeysToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UsingClipboard(false);
-        }
-
-        private void UsingClipboard(bool b)
-        {
-            Program.allSettings.UseClipboard = b;
-            useClipboardPasteToolStripMenuItem.Checked = b;
-            useSendKeysToolStripMenuItem.Checked = !b;
+            Program.allSettings.UseClipboard = false;
+            useClipboardPasteToolStripMenuItem.Checked = false;
+            useSendKeysToolStripMenuItem.Checked = true;
         }
     }
 }

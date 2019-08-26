@@ -12,24 +12,24 @@ using Microsoft.VisualStudio;
 
 namespace Clipboard_Cycler
 {
-    public partial class Form1 : Form
+    public partial class Form3 : Form
     {
-        public Form1()
+        public Form3()
         {
             InitializeComponent();
-            cycleOnlyToolStripMenuItem.Checked = true;
+            functionsOnlyToolStripMenuItem.Checked = true;
             useClipboardPasteToolStripMenuItem.Checked = Program.allSettings.UseClipboard;
             useClipboardPasteToolStripMenuItem.Checked = !Program.allSettings.UseClipboard;
         }
 
         private void MenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-
+            Application.Restart();
         }
 
         private void CycleOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Actions.SetForm(1);
+            Actions.SetForm(1);
         }
 
         private void CycleWFunctionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace Clipboard_Cycler
 
         private void FunctionsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Actions.SetForm(3);
+            //SetForm(3);
         }
 
         private void PasteOnlyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -49,19 +49,22 @@ namespace Clipboard_Cycler
 
         private void UseClipboardPasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UsingClipboard(true);
+            Program.allSettings.UseClipboard = true;
+            useClipboardPasteToolStripMenuItem.Checked = true;
+            useSendKeysToolStripMenuItem.Checked = false;
         }
 
         private void UseSendKeysToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UsingClipboard(false);
+            Program.allSettings.UseClipboard = false;
+            useClipboardPasteToolStripMenuItem.Checked = false;
+            useSendKeysToolStripMenuItem.Checked = true;
         }
 
-        private void UsingClipboard(bool b)
+        private void SetForm(short m)
         {
-            Program.allSettings.UseClipboard = b;
-            useClipboardPasteToolStripMenuItem.Checked = b;
-            useSendKeysToolStripMenuItem.Checked = !b;
+            Program.allSettings.Mode = m;
+            Application.Restart();
         }
     }
 }
