@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
+// INI cs from StackOverflow.
 // Change this to match your program's normal namespace
 namespace Clipboard_Cycler
 {
