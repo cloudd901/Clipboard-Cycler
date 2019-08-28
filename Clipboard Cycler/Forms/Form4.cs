@@ -22,10 +22,10 @@ namespace Clipboard_Cycler
             sortListToolStripMenuItem.Checked = Settings.SortList;
 
             //Configure Hotkeys
-            HotkeyCommand hotkeyComm = new HotkeyCommand(this, comboBox1, new short[] { 1, 2, 3 });
-            hotkeyComm.HKCountingLabel = label2;
-            hotkeyComm.HKTextLabel = label3;
+            HotkeyCommand hotkeyComm = new HotkeyCommand(this, new short[] { 1, 2, 3 });
             hotkeyComm.InitiateHotKeys();
+
+            //hotkeyComm.KeyActionCall += Program.KeyAction;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

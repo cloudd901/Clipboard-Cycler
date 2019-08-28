@@ -6,7 +6,7 @@ namespace HotkeyCommanderF.HKCFormExtension
     public class HotkeysExtensionForm : Form
     {
 
-        public delegate void KeyPressedCallEventHandler(object source, IntPtr k);
+        public delegate void KeyPressedCallEventHandler(Form f, short k);
         public event KeyPressedCallEventHandler KeyPressedCall;
         protected override void WndProc(ref Message m)
         {
@@ -20,7 +20,7 @@ namespace HotkeyCommanderF.HKCFormExtension
         }
         public virtual void OnKeyPressedCall(IntPtr k)
         {
-            KeyPressedCall?.Invoke(this, k);
-        }
+            KeyPressedCall?.Invoke(this, (short)k.ToInt32());
+        }//Send to Parent 'HotkeyCommand'
     }
 }
