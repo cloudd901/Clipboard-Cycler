@@ -1,16 +1,20 @@
 ﻿using Microsoft.VisualStudio.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Clipboard_Cycler
 {
     static class Program
     {
-        private static Type myProgram = Type.GetType("Clipboard_Cycler.Program");
-
+        public static string myTitle = "Clipboard Cycler";
+        public static FileInfo mySaveFile = null;
         public static List<string> myList = new List<string>();
         public static int myIndex = 0;
+        public static bool endOfListPasted = false;
+        public static MouseEvents mouse = new MouseEvents();
+        public static bool failed = false;
 
         /// <summary>
         /// The main entry point for the application.
@@ -23,10 +27,8 @@ namespace Clipboard_Cycler
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
-            { dynamic test = myProgram.GetMethod($"RunForm{Settings.Mode}").Invoke(null, null); }
+            { Type.GetType("Clipboard_Cycler.Program").GetMethod($"RunForm{Settings.Mode}").Invoke(null, null); }
         }
-
-
 
         //Practice and Proof of Concept using reflections instead of if statements.
         public static void RunForm1()

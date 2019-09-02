@@ -1,35 +1,93 @@
-﻿using HotkeyCommanderF;
-using HotkeyCommanderF.HKCFormExtension;
+﻿using HotkeyCommands;
+using HotkeyCommands.HKCFormExtension;
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+/*
+* HotkeyCommand.dll referenced in the Forms.cs using Hotkeys.
+* - Set the Extension method
+* - Create new instance of HotkeyCommand
+* - Set Action KeyActionCall (Returns Form and string to represent key)
+* 
+* Using Costura.Fody to package the DLL inside the released EXE.
+*/
 
 namespace Clipboard_Cycler
 {
     public partial class Form1 : HotkeysExtensionForm
     {
+        public HotkeyCommand hotkeyComm;
         public Form1()
         {
+            //Program.myList is the master list of copied data.
+            //comboBox1 is a secondary visual list of the same data.
+            //Program.myIndex is the current index of myList and comboBox1.
+
             InitializeComponent();
 
-            //Set window properties
-            this.Location = Settings.WinLoc;
+            Text = Program.myTitle;
+            Size = Settings.WinSize;
+            Location = Settings.WinLoc;
 
-            cycleOnlyToolStripMenuItem.Checked = true;
-            useClipboardPasteToolStripMenuItem.Checked = Settings.UseClipboard;
-            useSendKeysToolStripMenuItem.Checked = (!Settings.UseClipboard);
-            createUniqueListToolStripMenuItem.Checked = Settings.UniqueList;
-            sortListToolStripMenuItem.Checked = Settings.SortList;
+            SetMenuItems();
+            SetGUIandHotkeys();
+            
+            Actions.HandleFileOpen(Settings.SavedList.Replace("~`", Environment.NewLine));
 
-            //Configure Hotkeys
-            HotkeyCommand hotkeyComm = new HotkeyCommand(this, new short[] { 1, 2, 3 });
-            hotkeyComm.InitiateHotKeys();
+        }
+        public void SetGUIandHotkeys()
+        {
+            cycleOnlyToolStripMenuItem.Checked = Settings.Mode == 1 ? true : false;
+            cycleWFunctionsToolStripMenuItem.Checked = Settings.Mode == 2 ? true : false;
+            functionsOnlyToolStripMenuItem.Checked = Settings.Mode == 3 ? true : false;
+            pasteOnlyToolStripMenuItem.Checked = Settings.Mode == 4 ? true : false;
 
-            hotkeyComm.KeyActionCall += Actions.onKeyAction; //Do work on keypress
-            Actions.ActionComplete += OnActionComplete; //Followup on completed task
+            if (Settings.Mode == 1)
+            {
+                SetHotkeys(new string[] { "F1", "F2", "F3" });
+            }
+            else
+            {
+                //Actions.SetForm(Settings.Mode);
+            }
         }
 
-        private void OnActionComplete(string myAction, dynamic optional = null)
+        public void SetHotkeys(string[] hklist)
+        {
+            if (hotkeyComm == null)
+            {
+                hotkeyComm = new HotkeyCommand(this);
+                hotkeyComm.SetHotkeysGlobally = true;
+                hotkeyComm.SetSuppressExceptions = false;
+                hotkeyComm.KeyActionCall += Actions.onKeyAction; //Do work on keypress using the Action class
+                Actions.ActionComplete += OnActionComplete; //Followup on completed task from the Action class
+                hotkeyComm.KeyRegisteredCall += Registrations;
+            }
+            if (hotkeyComm.IsRegistered) { hotkeyComm._StopHotkeys(); }
+            hotkeyComm.HotkeyRegisterList(hklist, true);
+            if (Settings.UseEscape)
+            {
+                if (!label1.Text.Contains("Esc = Double Click")) { label1.Text += "\r\nEsc = Double Click"; }
+                if (!hotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { hotkeyComm.HotkeyRegister("Escape"); }
+            }
+            else if (!Settings.UseEscape)
+            {
+                if (label1.Text.Contains("Esc = Double Click")) { label1.Text = label1.Text.Replace("Esc = Double Click", ""); }
+                if (hotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { hotkeyComm.HotkeyUnregister("Escape"); }
+            }
+            hotkeyComm._StartHotkeys();
+            if (Program.failed) { MessageBox.Show("One or more Hotkeys failed to register."); }
+        }
+        private void Registrations(bool result, string key)
+        {
+            if (result == false)
+            {
+                if (key == "F1" || key == "F2") { comboBox1.Enabled = false; }
+                Program.failed = true;
+            }
+        }
+        public void OnActionComplete(Actions.myActions action, dynamic optional = null)
         {
             /*
              * Modify the Form after the Action is Completed.
@@ -37,128 +95,60 @@ namespace Clipboard_Cycler
              * Use Optional for additional information sent from Actions.
              */
 
-            //optional.GetType();
-            //MessageBox.Show($"Done- Action:{myAction} Added:{optional.ToString()}");
-
-            if (myAction == "copy")
+            if (action == Actions.myActions.Copy)
             {
                 CopyFromListToCombo();
             }
-
-            else if (myAction == "paste")
+            else if (action == Actions.myActions.Paste)
             {
                 label3.Text = "Last Paste: " + (string)optional;
                 try
                 { comboBox1.SelectedIndex++; }
                 catch { }
                 Program.myIndex = comboBox1.SelectedIndex;
+                if (Program.endOfListPasted) { label2.Text = "End/" + comboBox1.Items.Count; }
             }
         }//Fires from Actions after an action has been completed.
 
+        public void CopyFromListToCombo()
+        {
+            comboBox1.Items.Clear();
+            foreach (string s in Program.myList)
+            { comboBox1.Items.Add(Settings.TrimWS ? s.Trim() : s); }
+            CopyFromReset();
+        }
+        public void CopyFromComboToList()
+        {
+            Program.myList.Clear();
+            foreach (string s in comboBox1.Items)
+            { Program.myList.Add(Settings.TrimWS ? s.Trim() : s); }
+            CopyFromReset();
+        }
+        public void CopyFromReset()
+        {
+            Program.myIndex = 0;
+            try { comboBox1.SelectedIndex = 0; } catch { }
+            label2.Text = comboBox1.Items.Count > 0 ? "1/" + comboBox1.Items.Count : label2.Text = "0/0";
+        }
+
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Save();
+            Settings.SavedList = String.Join("~`", comboBox1.Items.Cast<string>());
+            Settings.WinSize = this.Size;
             Settings.WinLoc = this.Location;
+            Settings.Save();
+            if (hotkeyComm != null) { hotkeyComm.Dispose(); }
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Program.endOfListPasted = false;
             Program.myIndex = comboBox1.SelectedIndex;
             label2.Text = comboBox1.SelectedIndex + 1 + "/" + comboBox1.Items.Count;
         }
-
-        private void ModeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void Label1_TextChanged(object sender, EventArgs e)
         {
-            int index = GetToolStripIndex(sender) + 1;
-            if (index != Settings.Mode) { Actions.SetForm((short)index); }
-        }
-
-        private void UseToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (GetToolStripIndex(sender) == 0)
-            { UsingClipboard(true); }
-            else { UsingClipboard(false); }
-        }
-
-        private int GetToolStripIndex(object sender)
-        { return (int)((ToolStripItem)sender).Owner.Items.IndexOf((ToolStripItem)sender); }
-
-        private void UsingClipboard(bool b)
-        {
-            Settings.UseClipboard = b;
-            useClipboardPasteToolStripMenuItem.Checked = b;
-            useSendKeysToolStripMenuItem.Checked = !b;
-        }
-
-        private void CreateUniqueListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (createUniqueListToolStripMenuItem.Checked)
-            { createUniqueListToolStripMenuItem.Checked = false; }
-            else
-            { createUniqueListToolStripMenuItem.Checked = true; }
-
-            if (createUniqueListToolStripMenuItem.Checked)
-            { Settings.UniqueList = true; }
-            else
-            { Settings.UniqueList = false; }
-
-            if (Settings.UniqueList)
-            {
-                Program.myList = Program.myList.Distinct().ToList();
-                CopyFromListToCombo();
-            }
-        }
-
-        private void SortListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (sortListToolStripMenuItem.Checked)
-            { sortListToolStripMenuItem.Checked = false; }
-            else
-            { sortListToolStripMenuItem.Checked = true; }
-
-            if (sortListToolStripMenuItem.Checked)
-            { Settings.SortList = true; }
-            else
-            { Settings.SortList = false; }
-
-            if (Settings.SortList && comboBox1.Items.Count > 0)
-            { comboBox1.Sorted = true; }
-            else
-            { comboBox1.Sorted = false; }
-
-            CopyFromComboToList();
-        }
-
-        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Program.myList.Clear();
-            Program.myIndex = 0;
-            comboBox1.Items.Clear();
-            try { comboBox1.SelectedIndex = 0; } catch { }
-            comboBox1.Text = "";
-            label2.Text = "0/0";
-            label3.Text = "Last Paste:";
-        }
-
-        private void CopyFromListToCombo()
-        {
-            comboBox1.Items.Clear();
-            foreach (string s in Program.myList)
-            { comboBox1.Items.Add(s); }
-            Program.myIndex = 0;
-            try { comboBox1.SelectedIndex = 0; } catch { }
-            if (comboBox1.Items.Count > 0) { label2.Text = "1/" + comboBox1.Items.Count; }
-            else { label2.Text = "0/0"; }
-        }
-        private void CopyFromComboToList()
-        {
-            Program.myList.Clear();
-            foreach (string s in comboBox1.Items)
-            { Program.myList.Add(s); }
-            Program.myIndex = 0;
-            try { comboBox1.SelectedIndex = 0; } catch { }
-            if (comboBox1.Items.Count > 0) { label2.Text = "1/" + comboBox1.Items.Count; }
-            else { label2.Text = "0/0"; }
+            if (((Label)sender).Text.EndsWith("\r\n")) { ((Label)sender).Text = ((Label)sender).Text.Trim(); }
         }
     }
 }

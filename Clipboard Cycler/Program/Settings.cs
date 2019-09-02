@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 
 namespace Clipboard_Cycler
@@ -6,20 +7,44 @@ namespace Clipboard_Cycler
     public static class Settings
     {
         private static readonly IniFile ini = new IniFile(Path.GetTempPath() + "\\ClipboardCycler.ini");
-        private static bool useClipboard = false;
+        private static bool useEscape = true;
+        private static bool useSendCTRLV = false;
         private static bool uniqueList = false;
         private static bool sortList = false;
+        private static bool trimWS = true;
         private static short mode = 1;
         private static Point winPos = new Point(0, 0);
+        private static Size winSize = new Size(265, 167);
 
+        public static string[] Form2Fields { get; } = new string[5] { "", "", "", "", "" };
+        public static string[] Form3Fields { get; } = new string[5] { "", "", "", "", "" };
+        public static string[] Form4Fields { get; } = new string[12] { "", "", "", "", "", "", "", "", "", "", "", "" };
+        
+
+        
         public static void Initialize()
         {
-            bool.TryParse(ini.Read("UseClipboard"), out useClipboard);
+            bool.TryParse(ini.Read("UseEscape"), out useEscape);
+            bool.TryParse(ini.Read("UseClipboard"), out useSendCTRLV);
             bool.TryParse(ini.Read("UniqueList"), out uniqueList);
             bool.TryParse(ini.Read("SortList"), out sortList);
-            SavedList = ini.Read("SavedList");
+            bool.TryParse(ini.Read("TrimWS"), out trimWS);
+            SavedList = ini.Read("SavedList").Replace("~`", Environment.NewLine);
+            string[] f2temp = ini.Read("Form2Fields").Split('`');
+            if (f2temp.Length == 5) { for (int i = 0; i < 5; i++) { Form2Fields[i] = f2temp[i]; } }
+            string[] f3temp = ini.Read("Form3Fields").Split('`');
+            if (f3temp.Length == 5) { for (int i = 0; i < 5; i++) { Form3Fields[i] = f3temp[i]; } }
+            string[] f4temp = ini.Read("Form4Fields").Split('`');
+            if (f4temp.Length == 12) { for (int i = 0; i < 12; i++) { Form4Fields[i] = f4temp[i]; } }
+
             short.TryParse(ini.Read("Mode"), out mode);
             if (mode < 1 || mode > 4) { mode = 1; }
+            try
+            {
+                string[] temp = ini.Read("WinLoc").Replace("{Width=", "").Replace("Height=", "").Replace("}", "").Replace(" ", "").Split(',');
+                winSize = new Size(int.Parse(temp[0]), int.Parse(temp[1]));
+            }
+            catch { winSize = new Size(265, 167); }
             try
             {
                 string[] temp = ini.Read("WinLoc").Replace("{X=", "").Replace("Y=", "").Replace("}", "").Split(',');
@@ -28,9 +53,11 @@ namespace Clipboard_Cycler
             catch { winPos = new Point(0, 0); }
         }
 
-        public static bool UseClipboard { get => useClipboard; set => useClipboard = value; }
+        public static bool UseEscape { get => useEscape; set => useEscape = value; }
+        public static bool UseSendCTRLV { get => useSendCTRLV; set => useSendCTRLV = value; }
         public static bool UniqueList { get => uniqueList; set => uniqueList = value; }
         public static bool SortList { get => sortList; set => sortList = value; }
+        public static bool TrimWS { get => trimWS; set => trimWS = value; }
         public static string SavedList { get; set; } = "";
         public static short Mode { get => mode; set => mode = value; }
 
@@ -55,15 +82,42 @@ namespace Clipboard_Cycler
 
             }
         }
+        public static Size WinSize
+        {
+            get
+            {
+                try
+                {
+                    string[] temp = ini.Read("WinSize").Replace("{Width=", "").Replace("Height=", "").Replace("}", "").Replace(" ", "").Split(',');
+                    winSize = new Size(int.Parse(temp[0]), int.Parse(temp[1]));
+                }
+                catch
+                {
+                    winSize = new Size(0, 0);
+                }
+                return winSize;
+            }
+            set
+            {
+                winSize = value;
+
+            }
+        }
 
         public static void Save()
         {
-            ini.Write("UseClipboard", UseClipboard.ToString());
+            ini.Write("UseEscape", UseEscape.ToString());
+            ini.Write("UseClipboard", UseSendCTRLV.ToString());
             ini.Write("UniqueList", UniqueList.ToString());
             ini.Write("SortList", SortList.ToString());
-            ini.Write("SavedList", SavedList);
+            ini.Write("TrimWS", TrimWS.ToString());
+            ini.Write("SavedList", SavedList.Replace(Environment.NewLine,"~`"));
             ini.Write("Mode", Mode.ToString());
             ini.Write("WinLoc", winPos.ToString());
+            ini.Write("WinSize", winSize.ToString());
+            ini.Write("Form2Fields", string.Join("`", Form2Fields));
+            ini.Write("Form3Fields", string.Join("`", Form3Fields));
+            ini.Write("Form4Fields", string.Join("`", Form4Fields));
         }
     }
 }
