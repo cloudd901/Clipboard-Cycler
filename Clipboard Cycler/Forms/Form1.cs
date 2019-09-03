@@ -36,8 +36,8 @@ namespace Clipboard_Cycler
             SetGUIandHotkeys();
             
             Actions.HandleFileOpen(Settings.SavedList.Replace("~`", Environment.NewLine));
-
         }
+
         public void SetGUIandHotkeys()
         {
             cycleOnlyToolStripMenuItem.Checked = Settings.Mode == 1 ? true : false;

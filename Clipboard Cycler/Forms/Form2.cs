@@ -1,5 +1,6 @@
 ﻿using HotkeyCommands;
 using HotkeyCommands.HKCFormExtension;
+using MouseCommands;
 using System;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace Clipboard_Cycler
     public partial class Form2 : HotkeysExtensionForm
     {
         public HotkeyCommand hotkeyComm;
+        public MouseCommand mouse = new MouseCommand();
         public Form2()
         {
             //Program.myList is the master list of copied data.
@@ -149,6 +151,10 @@ namespace Clipboard_Cycler
                     }
                     Actions.RunProcess(s, a);
                 }
+            }
+            else if (action == Actions.myActions.Esc)
+            {
+                mouse._DoubleClick();
             }
 
         }//Fires from Actions after an action has been completed.
