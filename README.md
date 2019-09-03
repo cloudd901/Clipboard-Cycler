@@ -3,10 +3,10 @@ Cycle through Text using Hotkeys.
 
 I created my initial Clipboard Cycler using AutoIT script.
 Thought that it was about time to update it using C#.
-<br\>
-<br\>
+<p>
+<p>
 ---Cycle Keys -
-<br\>
+<p>
  F1 will copy text into the Cycler.
  - It will send a Ctrl+C and grab the data from the Clipboard.
  - It will auto separate Newlines and Tabs so it will work fine with Excel.
