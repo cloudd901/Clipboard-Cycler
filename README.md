@@ -37,6 +37,12 @@ Some F keys can be used to run applications such as F4 on the 2nd and 3rd Forms.
  - Parameters can be used by putting them in doublequotes and comma separated.
  - Example: [C:\Program Files\Internet Explorer\iexplorer.exe "google.com, msn.com"]
 
+=
+
+--Other Paste Features -
+
+=
+
 Other F keys can be used to simply paste text entered in the adjacent textbox.
  - Any text is allowed except the backquote( ` ) as it is used for saving and retrieving data.
 
