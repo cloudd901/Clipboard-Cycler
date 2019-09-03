@@ -5,8 +5,10 @@ I created my initial Clipboard Cycler using AutoIT script.
 Thought that it was about time to update it using C#.
 
 
+
 Cycle Keys -
- 
+
+
  F1 will copy text into the Cycler.
  - It will send a Ctrl+C and grab the data from the Clipboard.
  - It will auto separate Newlines and Tabs so it will work fine with Excel.
@@ -22,9 +24,11 @@ Cycle Keys -
  
  (Optional) Esc will doubleclick the mouse.
  - Usefull for highlighting sections of text to replace.
- 
- 
+
+
+
 Run Features -
+
 
  Some F keys can be used to run applications such as F4 on the 2nd and 3rd Forms.
  - Full path must be entered without quotes if file is not in the same directory.
@@ -32,5 +36,4 @@ Run Features -
  - Example: [C:\Program Files\Internet Explorer\iexplorer.exe "google.com, msn.com"]
 
  Other F keys can be used to simply paste text entered in the adjacent textbox.
- - Any text is allowed except the backquote(`)
- - That key is used for saving and retrieving data when the application is closed.
+ - Any text is allowed except the backquote( ` ) as it is used for saving and retrieving data.
