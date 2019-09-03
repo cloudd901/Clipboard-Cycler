@@ -13,7 +13,6 @@ namespace Clipboard_Cycler
         public static List<string> myList = new List<string>();
         public static int myIndex = 0;
         public static bool endOfListPasted = false;
-        public static MouseEvents mouse = new MouseEvents();
         public static bool failed = false;
 
         /// <summary>

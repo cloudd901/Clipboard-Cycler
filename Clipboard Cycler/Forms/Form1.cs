@@ -1,7 +1,7 @@
 ﻿using HotkeyCommands;
 using HotkeyCommands.HKCFormExtension;
+using MouseCommands;
 using System;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 /*
@@ -18,6 +18,8 @@ namespace Clipboard_Cycler
     public partial class Form1 : HotkeysExtensionForm
     {
         public HotkeyCommand hotkeyComm;
+        public MouseCommand mouse = new MouseCommand();
+
         public Form1()
         {
             //Program.myList is the master list of copied data.
@@ -73,6 +75,7 @@ namespace Clipboard_Cycler
             }
             else if (!Settings.UseEscape)
             {
+
                 if (label1.Text.Contains("Esc = Double Click")) { label1.Text = label1.Text.Replace("Esc = Double Click", ""); }
                 if (hotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { hotkeyComm.HotkeyUnregister("Escape"); }
             }
@@ -107,6 +110,10 @@ namespace Clipboard_Cycler
                 catch { }
                 Program.myIndex = comboBox1.SelectedIndex;
                 if (Program.endOfListPasted) { label2.Text = "End/" + comboBox1.Items.Count; }
+            }
+            else if (action == Actions.myActions.Esc)
+            {
+                mouse._DoubleClick();
             }
         }//Fires from Actions after an action has been completed.
 

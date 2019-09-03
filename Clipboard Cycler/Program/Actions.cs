@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using MouseCommands;
 
 namespace Clipboard_Cycler
 {
@@ -17,7 +18,8 @@ namespace Clipboard_Cycler
             Paste,
             Enter,
             Run,
-            Paste2
+            Paste2,
+            Esc
         };
 
         public delegate void ActionCompleteEventHandler(myActions action, dynamic optional = null);
@@ -269,8 +271,7 @@ namespace Clipboard_Cycler
         //==========================================================
         private static void HandleHotkeyEscape()
         {
-            Program.mouse.MouseEvent(MouseEvents.MouseEventFlags.LeftDown).MouseEvent(MouseEvents.MouseEventFlags.LeftUp);
-            Program.mouse.MouseEvent(MouseEvents.MouseEventFlags.LeftDown).MouseEvent(MouseEvents.MouseEventFlags.LeftUp);
+            ActionComplete?.Invoke(myActions.Esc);
         }
     }
 }
