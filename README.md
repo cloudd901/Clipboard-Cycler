@@ -5,7 +5,7 @@ I created my initial Clipboard Cycler using AutoIT script.
 Thought that it was about time to update it using C#.
 
 
- - Main Keys -
+Cycle Keys -
  
  F1 will copy text into the Cycler.
  - It will send a Ctrl+C and grab the data from the Clipboard.
@@ -24,5 +24,13 @@ Thought that it was about time to update it using C#.
  - Usefull for highlighting sections of text to replace.
  
  
- - Other Features -
- 
+Run Features -
+
+ Some F keys can be used to run applications such as F4 on the 2nd and 3rd Forms.
+ - Full path must be entered without quotes if file is not in the same directory.
+ - Parameters can be used by putting them in doublequotes and comma separated.
+ - Example: [C:\Program Files\Internet Explorer\iexplorer.exe "google.com, msn.com"]
+
+ Other F keys can be used to simply paste text entered in the adjacent textbox.
+ - Any text is allowed except the backquote(`)
+ - That key is used for saving and retrieving data when the application is closed.
