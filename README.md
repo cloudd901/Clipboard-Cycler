@@ -1,6 +1,8 @@
 # Clipboard Cycler
 Cycle through Text using Hotkeys.
 
+![Icon](https://github.com/cloudd901/Clipboard-Cycler/blob/master/Clipboard%20Cycler/CC.ico)
+
 I created my initial Clipboard Cycler using AutoIT script.
 Thought that it was about time to update it using C#.
 
