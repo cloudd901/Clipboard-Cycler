@@ -47,6 +47,7 @@ namespace Clipboard_Cycler
         public static void CallRestart(Form f)
         {
             f.Close();
+            System.Threading.Tasks.Task.Delay(500).Wait();
             Application.Restart();
         }
 
@@ -104,8 +105,20 @@ namespace Clipboard_Cycler
             try
             {
                 Clipboard.SetText(s);
+                string fixedData = "";
                 if (Settings.UseSendCTRLV) { SendKeys.Send("^v"); System.Threading.Tasks.Task.Delay(100).Wait(); }
-                else { foreach (char c in s) { SendKeys.Send(c.ToString()); System.Threading.Tasks.Task.Delay(5).Wait(); } }
+                else {
+                    foreach (char c in s)
+                    {
+                        if (c == '{') { fixedData += c; continue; }
+                        else if (fixedData != "") { fixedData += c; if (c != '}') { continue; } }
+                        else { fixedData = FixString(c.ToString()); }
+
+                        SendKeys.Send(fixedData);
+                        fixedData = "";
+                        System.Threading.Tasks.Task.Delay(5).Wait();
+                    }
+                }
             }
             catch
             { }
