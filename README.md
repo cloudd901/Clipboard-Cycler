@@ -8,7 +8,7 @@ Thought that it was about time to update it using C#.
 
 </br></br>
 <b>Cycle Keys</b>
-<br><br>
+</br></br>
 
 F1 will copy text into the Cycler.
  - It will send a Ctrl+C and grab the data from the Clipboard.
@@ -26,19 +26,21 @@ F3 will send the Enter key.
 (Optional) Esc will doubleclick the mouse.
  - Usefull for highlighting sections of text to replace.
 
-
+</br></br>
 <b>Run Features</b>
-
+</br></br>
 
 Some F keys can be used to run applications such as F4 on the 2nd and 3rd Forms.
  - Full path must be entered without quotes if file is not in the same directory.
  - Parameters can be used by putting them in doublequotes and comma separated.
  - Example: [C:\Program Files\Internet Explorer\iexplorer.exe "google.com, msn.com"]
 
-
+</br></br>
 <b>Other Paste Features</b>
-
+</br></br>
 
 Other F keys can be used to simply paste text entered in the adjacent textbox.
  - Any text is allowed except the backquote( ` ) as it is used for saving and retrieving data.
 
+When using the Paste lines, you can send special keys by using brackets { }.
+ - Example: To use a Paste key as an Enter key, use {Enter}.
