@@ -21,10 +21,10 @@ F2 will paste the text.
  - It will stop once the last item has been pasted.
  
 F3 will send the Enter key.
- - Usefull when using paste to do searches or data entry.
+ - Useful when using paste to do searches or data entry.
  
 (Optional) Esc will doubleclick the mouse.
- - Usefull for highlighting sections of text to replace.
+ - Useful for highlighting sections of text to replace.
 
 </br></br>
 <b>Run Features</b>
