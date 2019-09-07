@@ -10,7 +10,7 @@ namespace Clipboard_Cycler
 {
     public static class Actions
     {
-        
+
         private static Type myType = Type.GetType("Clipboard_Cycler.Actions");
         public enum myActions
         {
@@ -35,10 +35,18 @@ namespace Clipboard_Cycler
             catch (Exception e) { MessageBox.Show(e.Message); }
         }//Fires from HotkeyCommander and triggers an event using Reflection
 
-        public static void SetForm(short m)
+        public static void SetForm(short m, Form f)
         {
-            Settings.Mode = m;
-            Settings.Save();
+            if (Settings.Mode != m)
+            {
+                Settings.Mode = m;
+                Settings.Save();
+                CallRestart(f);
+            }
+        }
+        public static void CallRestart(Form f)
+        {
+            f.Close();
             Application.Restart();
         }
 
@@ -96,11 +104,16 @@ namespace Clipboard_Cycler
             try
             {
                 Clipboard.SetText(s);
-                if (Settings.UseSendCTRLV) { SendKeys.Send("^v"); }
+                if (Settings.UseSendCTRLV) { SendKeys.Send("^v"); System.Threading.Tasks.Task.Delay(100).Wait(); }
                 else { foreach (char c in s) { SendKeys.Send(c.ToString()); System.Threading.Tasks.Task.Delay(5).Wait(); } }
             }
             catch
             { }
+        }
+        private static string FixString(string s)
+        {
+            if (s == "+" || s == "^" || s == "%") { s = "{" + s + "}"; }
+            return s;
         }
         public static void RunProcess(string s, string[] a = null)
         {
@@ -126,7 +139,9 @@ namespace Clipboard_Cycler
                 List<string> data;
                 string temp = Clipboard.GetText();
                 Clipboard.Clear();
+                System.Threading.Tasks.Task.Delay(50).Wait();
                 SendKeys.Send("^c");
+                System.Threading.Tasks.Task.Delay(100).Wait();
                 data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 data.RemoveAll(x => x == "");
                 if (data.Count > 0)
@@ -146,7 +161,7 @@ namespace Clipboard_Cycler
             }
             catch
             { }
-            newDataCount -= myList.Count;
+            newDataCount = newDataCount==0 ? myList.Count: newDataCount-myList.Count;
             ActionComplete?.Invoke(myActions.Copy, newDataCount);
         }
         private static void PastePressed()

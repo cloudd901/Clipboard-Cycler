@@ -25,9 +25,9 @@ namespace Clipboard_Cycler
         private void ModeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int index = GetToolStripIndex(sender) + 1;
-            if (index != Settings.Mode) { Actions.SetForm((short)index); }
-            Settings.Mode = (short)index;
-            SetGUIandHotkeys();
+            if (index != Settings.Mode) { Actions.SetForm((short)index, this); }
+            //Settings.Mode = (short)index;
+            //SetGUIandHotkeys();
         }
 
         //===============================Setting Menu Items====================================

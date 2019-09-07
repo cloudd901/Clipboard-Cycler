@@ -173,5 +173,45 @@ namespace Clipboard_Cycler
             if (open.ShowDialog() == DialogResult.OK)
             { textBox1.Text = open.FileName;  }
         }
+
+        private void Label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TextBox11_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TextBox10_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TextBox12_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TextBox9_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
