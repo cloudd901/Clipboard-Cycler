@@ -33,7 +33,7 @@ F3 will send the Enter key.
 Some F keys can be used to run applications such as F4 on the 2nd and 3rd Forms.
  - Full path must be entered without quotes if file is not in the same directory.
  - Parameters can be used by putting them in doublequotes and comma separated.
- - Example: [C:\Program Files\Internet Explorer\iexplorer.exe "google.com, msn.com"]
+ - Example: [C:\Program Files\Internet Explorer\iexplore.exe "google.com, msn.com"]
 
 </br></br>
 <b>Other Paste Features</b>
