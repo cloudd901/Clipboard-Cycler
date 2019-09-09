@@ -150,6 +150,7 @@ namespace Clipboard_Cycler
                         a = args.Split(',').Select(x => x.Trim()).ToArray();
                     }
                     Actions.RunProcess(s, a);
+                    //Actions.RunProcess("taskkill.exe", new string[] { "/f /im notepad.exe" });
                 }
             }
             else if (action == Actions.myActions.Esc)
@@ -214,7 +215,5 @@ namespace Clipboard_Cycler
             if (open.ShowDialog() == DialogResult.OK)
             { textBox1.Text = open.FileName;  }
         }
-
-
     }
 }

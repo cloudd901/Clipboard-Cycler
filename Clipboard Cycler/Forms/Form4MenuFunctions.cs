@@ -10,12 +10,9 @@ namespace Clipboard_Cycler
 
         private void SetMenuItems()
         {
-            //useEscToDblClickToolStripMenuItem.Checked = Settings.UseEscape;
             useClipboardPasteToolStripMenuItem.Checked = Settings.UseSendCTRLV;
-            useSendKeysToolStripMenuItem.Checked = (!Settings.UseSendCTRLV);
-            //createUniqueListToolStripMenuItem.Checked = Settings.UniqueList;
-            //sortListToolStripMenuItem.Checked = Settings.SortList;
-            //trimWhitespaceToolStripMenuItem.Checked = Settings.TrimWS;
+            useSendKeysToolStripMenuItem.Checked = Settings.UseSendKeys;
+            useSendKeystrokeswDelayToolStripMenuItem.Checked = Settings.UseSendKeysDelay;
         }
 
         private int GetToolStripIndex(object sender)
@@ -26,23 +23,26 @@ namespace Clipboard_Cycler
         {
             int index = GetToolStripIndex(sender) + 1;
             if (index != Settings.Mode) { Actions.SetForm((short)index, this); }
-            //Settings.Mode = (short)index;
-            //SetGUIandHotkeys();
         }
 
         //===============================Setting Menu Items====================================
         //=====================================================================================
         private void UseToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Settings.UseSendCTRLV = false;
+            Settings.UseSendKeys = false;
+            Settings.UseSendKeysDelay = false;
+
             if (GetToolStripIndex(sender) == 2)
-            { UsingClipboard(true); }
-            else { UsingClipboard(false); }
-        }
-        private void UsingClipboard(bool b)
-        {
-            Settings.UseSendCTRLV = b;
-            useClipboardPasteToolStripMenuItem.Checked = b;
-            useSendKeysToolStripMenuItem.Checked = !b;
+            { Settings.UseSendCTRLV = true; }
+            else if (GetToolStripIndex(sender) == 3)
+            { Settings.UseSendKeys = true; }
+            else if (GetToolStripIndex(sender) == 4)
+            { Settings.UseSendKeysDelay = true; }
+
+            useClipboardPasteToolStripMenuItem.Checked = Settings.UseSendCTRLV;
+            useSendKeysToolStripMenuItem.Checked = Settings.UseSendKeys;
+            useSendKeystrokeswDelayToolStripMenuItem.Checked = Settings.UseSendKeysDelay;
         }
 
         private void UseEscToDblClickToolStripMenuItem_Click(object sender, EventArgs e)

@@ -9,6 +9,8 @@ namespace Clipboard_Cycler
         private static readonly IniFile ini = new IniFile(Path.GetTempPath() + "\\ClipboardCycler.ini");
         private static bool useEscape = true;
         private static bool useSendCTRLV = false;
+        private static bool useSendKeys = true;
+        private static bool useSendKeysDelay = false;
         private static bool uniqueList = false;
         private static bool sortList = false;
         private static bool trimWS = true;
@@ -25,7 +27,9 @@ namespace Clipboard_Cycler
         public static void Initialize()
         {
             bool.TryParse(ini.Read("UseEscape"), out useEscape);
-            bool.TryParse(ini.Read("UseClipboard"), out useSendCTRLV);
+            bool.TryParse(ini.Read("UseSendCTRLV"), out useSendCTRLV);
+            bool.TryParse(ini.Read("UseSendKeysDelay"), out useSendKeysDelay);
+            if (!bool.TryParse(ini.Read("UseSendKeys"), out useSendKeys)) { if (!useSendCTRLV && !useSendKeysDelay) { useSendKeys = true; } }
             bool.TryParse(ini.Read("UniqueList"), out uniqueList);
             bool.TryParse(ini.Read("SortList"), out sortList);
             bool.TryParse(ini.Read("TrimWS"), out trimWS);
@@ -55,6 +59,8 @@ namespace Clipboard_Cycler
 
         public static bool UseEscape { get => useEscape; set => useEscape = value; }
         public static bool UseSendCTRLV { get => useSendCTRLV; set => useSendCTRLV = value; }
+        public static bool UseSendKeys { get => useSendKeys; set => useSendKeys = value; }
+        public static bool UseSendKeysDelay { get => useSendKeysDelay; set => useSendKeysDelay = value; }
         public static bool UniqueList { get => uniqueList; set => uniqueList = value; }
         public static bool SortList { get => sortList; set => sortList = value; }
         public static bool TrimWS { get => trimWS; set => trimWS = value; }
@@ -107,7 +113,9 @@ namespace Clipboard_Cycler
         public static void Save()
         {
             ini.Write("UseEscape", UseEscape.ToString());
-            ini.Write("UseClipboard", UseSendCTRLV.ToString());
+            ini.Write("UseSendCTRLV", UseSendCTRLV.ToString());
+            ini.Write("UseSendKeys", UseSendKeys.ToString());
+            ini.Write("UseSendKeysDelay", UseSendKeysDelay.ToString());
             ini.Write("UniqueList", UniqueList.ToString());
             ini.Write("SortList", SortList.ToString());
             ini.Write("TrimWS", TrimWS.ToString());

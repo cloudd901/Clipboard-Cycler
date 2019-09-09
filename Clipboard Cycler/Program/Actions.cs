@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using MouseCommands;
 
@@ -47,8 +48,9 @@ namespace Clipboard_Cycler
         public static void CallRestart(Form f)
         {
             f.Close();
-            System.Threading.Tasks.Task.Delay(500).Wait();
+            while (f.Visible) { System.Threading.Tasks.Task.Delay(500).Wait(); }
             Application.Restart();
+            Environment.Exit(0);
         }
 
         public static void HandleFileOpen(string text = null)
@@ -106,17 +108,26 @@ namespace Clipboard_Cycler
             {
                 Clipboard.SetText(s);
                 string fixedData = "";
-                if (Settings.UseSendCTRLV) { SendKeys.Send("^v"); System.Threading.Tasks.Task.Delay(100).Wait(); }
+                if (Settings.UseSendCTRLV) { SendKeys.Send("^v"); Task.Delay(100).Wait(); }
                 else {
+                    int i = 1;
                     foreach (char c in s)
                     {
                         if (c == '{') { fixedData += c; continue; }
                         else if (fixedData != "") { fixedData += c; if (c != '}') { continue; } }
                         else { fixedData = FixString(c.ToString()); }
 
+                        if (Settings.UseSendKeysDelay)
+                        {
+                            if (i == 1) { Task.Delay(300).Wait(); }
+                            else if (i == 2) { Task.Delay(200).Wait(); }
+                            else if (i == 3) { Task.Delay(100).Wait(); }
+                            else { Task.Delay(5).Wait(); }
+                        }
+
                         SendKeys.Send(fixedData);
                         fixedData = "";
-                        System.Threading.Tasks.Task.Delay(5).Wait();
+                        i++;
                     }
                 }
             }
@@ -131,8 +142,9 @@ namespace Clipboard_Cycler
         public static void RunProcess(string s, string[] a = null)
         {
             ProcessStartInfo start = new ProcessStartInfo();
+            //start.UseShellExecute = false;
             start.FileName = s;
-            try { start.Arguments = $"\"{string.Join("\",\"", a)}\""; } catch { }
+            try { start.Arguments = $"\"{string.Join("\" \"", a)}\""; } catch { }
             try { Process.Start(start); }
             catch (Exception e) { MessageBox.Show(e.Message); }
 
