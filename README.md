@@ -21,10 +21,10 @@ F2 will paste the text.
  - It will stop once the last item has been pasted.
  
 F3 will send the Enter key.
- - Usefull when using paste to do searches or data entry.
+ - Useful when using paste to do searches or data entry.
  
 (Optional) Esc will doubleclick the mouse.
- - Usefull for highlighting sections of text to replace.
+ - Useful for highlighting sections of text to replace.
 
 </br></br>
 <b>Run Features</b>
@@ -33,7 +33,7 @@ F3 will send the Enter key.
 Some F keys can be used to run applications such as F4 on the 2nd and 3rd Forms.
  - Full path must be entered without quotes if file is not in the same directory.
  - Parameters can be used by putting them in doublequotes and comma separated.
- - Example: [C:\Program Files\Internet Explorer\iexplorer.exe "google.com, msn.com"]
+ - Example: [C:\Program Files\Internet Explorer\iexplore.exe "google.com, msn.com"]
 
 </br></br>
 <b>Other Paste Features</b>
