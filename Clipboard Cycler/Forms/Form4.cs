@@ -75,6 +75,7 @@ namespace Clipboard_Cycler
                 hotkeyComm.SetSuppressExceptions = false;
                 hotkeyComm.KeyActionCall += Actions.onKeyAction; //Do work on keypress using the Action class
                 hotkeyComm.KeyRegisteredCall += Registrations;
+                hotkeyComm.KeyUnregisteredCall += UnRegistrations;
                 Actions.ActionComplete += OnActionComplete; //Followup on completed task from the Action class
             }
             if (hotkeyComm.IsRegistered) { hotkeyComm._StopHotkeys(); }
@@ -83,7 +84,7 @@ namespace Clipboard_Cycler
             if (Program.failed) { MessageBox.Show("One or more Hotkeys failed to register."); }
         }
 
-        private void Registrations(bool result, string key)
+        private void Registrations(bool result, string key, short id)
         {
             if (result == false)
             {
@@ -101,6 +102,11 @@ namespace Clipboard_Cycler
                 else if (key == "{CTRL}F12") { label12.Enabled = false; }
                 Program.failed = true;
             }
+            Program.programHotkeys.Add(id, key);
+        }
+        private void UnRegistrations(string key, short id)
+        {
+            Program.programHotkeys.Remove(id);
         }
 
         public void OnActionComplete(Actions.myActions action, dynamic optional = null)
@@ -115,27 +121,27 @@ namespace Clipboard_Cycler
             {
                 if ((string)optional == "F1")
                 { Actions.PasteString(textBox1.Text); }
-                if ((string)optional == "F2")
+                else if ((string)optional == "F2")
                 { Actions.PasteString(textBox2.Text); }
-                if ((string)optional == "F3")
+                else if ((string)optional == "F3")
                 { Actions.PasteString(textBox3.Text); }
-                if ((string)optional == "F4")
+                else if ((string)optional == "F4")
                 { Actions.PasteString(textBox4.Text); }
-                if ((string)optional == "F5")
+                else if ((string)optional == "F5")
                 { Actions.PasteString(textBox5.Text); }
-                if ((string)optional == "F6")
+                else if ((string)optional == "F6")
                 { Actions.PasteString(textBox6.Text); }
-                if ((string)optional == "F7")
+                else if ((string)optional == "F7")
                 { Actions.PasteString(textBox7.Text); }
-                if ((string)optional == "F8")
+                else if ((string)optional == "F8")
                 { Actions.PasteString(textBox8.Text); }
-                if ((string)optional == "F9")
+                else if ((string)optional == "F9")
                 { Actions.PasteString(textBox9.Text); }
-                if ((string)optional == "F10")
+                else if ((string)optional == "F10")
                 { Actions.PasteString(textBox10.Text); }
-                if ((string)optional == "F11")
+                else if ((string)optional == "F11")
                 { Actions.PasteString(textBox11.Text); }
-                if ((string)optional == "{CTRL}F12")
+                else if ((string)optional == "{CTRL}F12")
                 { Actions.PasteString(textBox12.Text); }
             }
             else if (action == Actions.myActions.Esc)
@@ -172,46 +178,6 @@ namespace Clipboard_Cycler
             open.Filter = "Executable Files (*.exe, *.bat)|*.exe; *.bat|All files (*.*)|*.*";
             if (open.ShowDialog() == DialogResult.OK)
             { textBox1.Text = open.FileName;  }
-        }
-
-        private void Label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox11_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox10_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label12_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox12_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox9_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

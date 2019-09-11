@@ -7,7 +7,6 @@ namespace Clipboard_Cycler
 {
     partial class Form1
     {
-
         private void SetMenuItems()
         {
             useEscToDblClickToolStripMenuItem.Checked = Settings.UseEscape;
@@ -17,6 +16,12 @@ namespace Clipboard_Cycler
             createUniqueListToolStripMenuItem.Checked = Settings.UniqueList;
             sortListToolStripMenuItem.Checked = Settings.SortList;
             trimWhitespaceToolStripMenuItem.Checked = Settings.TrimWS;
+        }
+
+        private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Forms.AboutBox1 about = new Forms.AboutBox1();
+            about.ShowDialog();
         }
 
         private int GetToolStripIndex(object sender)

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MouseCommands;
 
 namespace Clipboard_Cycler
 {
@@ -30,11 +29,12 @@ namespace Clipboard_Cycler
         {
             try
             {
+                if (key == "{esc}" || key == "{escape}") { key = "{Escape}"; }
                 if (key.Contains("}")) { key = key.Replace("{", "").Replace("}", ""); }
                 myType.GetMethod("HandleHotkey" + key, BindingFlags.Static | BindingFlags.NonPublic).Invoke(form, null);
             }
             catch (Exception e) { MessageBox.Show(e.Message); }
-        }//Fires from HotkeyCommander and triggers an event using Reflection
+        }//Fires from Program.hotkeyCommander and triggers an event using Reflection
 
         public static void SetForm(short m, Form f)
         {
@@ -48,7 +48,8 @@ namespace Clipboard_Cycler
         public static void CallRestart(Form f)
         {
             f.Close();
-            while (f.Visible) { System.Threading.Tasks.Task.Delay(500).Wait(); }
+            while (f.Visible) { Task.Delay(500).Wait(); }
+            Task.Delay(500).Wait();
             Application.Restart();
             Environment.Exit(0);
         }
@@ -117,6 +118,20 @@ namespace Clipboard_Cycler
                         else if (fixedData != "") { fixedData += c; if (c != '}') { continue; } }
                         else { fixedData = FixString(c.ToString()); }
 
+                        //Fix issue with SendKeys not sending F*Key shortcuts.
+                        //Example issue- if F5 is registered, using F6 to send {F5} would not work.
+                        if (fixedData.StartsWith("{"))
+                        {
+                            string key = fixedData.Replace("{", "").Replace("}", "");
+                            if (key == "esc" || key == "escape") { key = "Escape"; fixedData = "{Escape}"; }
+                            else if (key == "tab") { key = "Tab"; fixedData = "{Tab}"; }
+
+                            if (Program.programHotkeys.ContainsValue(key))
+                            { onKeyAction(null, 0, fixedData); continue; }
+                        }
+
+                        SendKeys.SendWait(fixedData);
+
                         if (Settings.UseSendKeysDelay)
                         {
                             if (i == 1) { Task.Delay(300).Wait(); }
@@ -125,7 +140,6 @@ namespace Clipboard_Cycler
                             else { Task.Delay(5).Wait(); }
                         }
 
-                        SendKeys.Send(fixedData);
                         fixedData = "";
                         i++;
                     }

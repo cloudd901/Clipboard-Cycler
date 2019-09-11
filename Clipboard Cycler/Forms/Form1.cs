@@ -49,10 +49,6 @@ namespace Clipboard_Cycler
             {
                 SetHotkeys(new string[] { "F1", "F2", "F3" });
             }
-            else
-            {
-                //Actions.SetForm(Settings.Mode);
-            }
         }
 
         public void SetHotkeys(string[] hklist)
@@ -63,8 +59,9 @@ namespace Clipboard_Cycler
                 hotkeyComm.SetHotkeysGlobally = true;
                 hotkeyComm.SetSuppressExceptions = false;
                 hotkeyComm.KeyActionCall += Actions.onKeyAction; //Do work on keypress using the Action class
-                Actions.ActionComplete += OnActionComplete; //Followup on completed task from the Action class
                 hotkeyComm.KeyRegisteredCall += Registrations;
+                hotkeyComm.KeyUnregisteredCall += UnRegistrations;
+                Actions.ActionComplete += OnActionComplete; //Followup on completed task from the Action class
             }
             if (hotkeyComm.IsRegistered) { hotkeyComm._StopHotkeys(); }
             hotkeyComm.HotkeyRegisterList(hklist, true);
@@ -82,13 +79,18 @@ namespace Clipboard_Cycler
             hotkeyComm._StartHotkeys();
             if (Program.failed) { MessageBox.Show("One or more Hotkeys failed to register."); }
         }
-        private void Registrations(bool result, string key)
+        private void Registrations(bool result, string key, short id)
         {
             if (result == false)
             {
                 if (key == "F1" || key == "F2") { comboBox1.Enabled = false; }
                 Program.failed = true;
             }
+            Program.programHotkeys.Add(id, key);
+        }
+        private void UnRegistrations(string key, short id)
+        {
+            Program.programHotkeys.Remove(id);
         }
         public void OnActionComplete(Actions.myActions action, dynamic optional = null)
         {

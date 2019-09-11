@@ -19,6 +19,12 @@ namespace Clipboard_Cycler
             trimWhitespaceToolStripMenuItem.Checked = Settings.TrimWS;
         }
 
+        private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Forms.AboutBox1 about = new Forms.AboutBox1();
+            about.ShowDialog();
+        }
+
         private int GetToolStripIndex(object sender)
         { return (int)((ToolStripItem)sender).Owner.Items.IndexOf((ToolStripItem)sender); }
         //=================================Mode Menu Items=====================================

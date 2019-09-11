@@ -14,7 +14,7 @@ namespace Clipboard_Cycler
         public static int myIndex = 0;
         public static bool endOfListPasted = false;
         public static bool failed = false;
-
+        public static Dictionary<short, string> programHotkeys = new Dictionary<short, string>();
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
