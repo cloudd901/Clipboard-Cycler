@@ -139,6 +139,7 @@ namespace Clipboard_Cycler
                             else if (i == 3) { Task.Delay(100).Wait(); }
                             else { Task.Delay(5).Wait(); }
                         }
+                        else { Task.Delay(1).Wait(); }
 
                         fixedData = "";
                         i++;
