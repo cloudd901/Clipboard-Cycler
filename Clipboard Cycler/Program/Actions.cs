@@ -127,7 +127,7 @@ namespace Clipboard_Cycler
                             else if (key == "tab") { key = "Tab"; fixedData = "{Tab}"; }
 
                             if (Program.programHotkeys.ContainsValue(key))
-                            { onKeyAction(null, 0, fixedData); continue; }
+                            { onKeyAction(null, 0, fixedData); fixedData = ""; continue; }
                         }
 
                         SendKeys.SendWait(fixedData);
