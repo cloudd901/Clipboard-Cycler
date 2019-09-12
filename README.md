@@ -34,6 +34,7 @@ Some F keys can be used to run applications such as F4 on the 2nd and 3rd Forms.
  - Full path must be entered without quotes if file is not in the same directory.
  - Parameters can be used by putting them in doublequotes and comma separated.
  - Example: [C:\Program Files\Internet Explorer\iexplore.exe "google.com, msn.com"]
+ - Example: [taskkill "/f, /im, notepad.exe"]
 
 </br></br>
 <b>Other Paste Features</b>
@@ -44,3 +45,12 @@ Other F keys can be used to simply paste text entered in the adjacent textbox.
 
 When using the Paste lines, you can send special keys by using brackets { }.
  - Example: To use a Paste key as an Enter key, use {Enter}.
+ - Other keys can be chained together such as calling {F5} from F6.
+ - You can use multiple keys within a single textbox.
+
+</br></br>
+<b>Known Issues</b>
+</br></br>
+
+Depending on where you launch the Clipboard Cycler, you may get an 'Open File Security Warning'.
+If so, the application will not automatically reopen when switching Window types.
