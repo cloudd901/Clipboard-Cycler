@@ -3,7 +3,6 @@ using HotkeyCommands.HKCFormExtension;
 using MouseCommands;
 using System;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 /*
 * HotkeyCommand.dll referenced in the Forms.cs using Hotkeys.
@@ -18,8 +17,9 @@ namespace Clipboard_Cycler
 {
     public partial class Form4 : HotkeysExtensionForm
     {
-        public HotkeyCommand hotkeyComm;
-        public MouseCommand mouse = new MouseCommand();
+        private HotkeyCommand HotkeyComm { get; set; } = null;
+        private MouseCommand Mouse { get; set; } = new MouseCommand();
+
         public Form4()
         {
             //Program.myList is the master list of copied data.
@@ -28,7 +28,7 @@ namespace Clipboard_Cycler
 
             InitializeComponent();
 
-            Text = Program.myTitle;
+            Text = Program.MyTitle;
             Size = Settings.WinSize;
             Location = Settings.WinLoc;
             textBox1.Text = Settings.Form4Fields[0];
@@ -49,7 +49,7 @@ namespace Clipboard_Cycler
 
             Actions.HandleFileOpen(Settings.SavedList.Replace("~`", Environment.NewLine));
         }
-        public void SetGUIandHotkeys()
+        private void SetGUIandHotkeys()
         {
             cycleOnlyToolStripMenuItem.Checked = Settings.Mode == 1 ? true : false;
             cycleWFunctionsToolStripMenuItem.Checked = Settings.Mode == 2 ? true : false;
@@ -58,36 +58,63 @@ namespace Clipboard_Cycler
 
             if (Settings.Mode == 4)
             {
-                SetHotkeys(new string[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "{CTRL}F12" });
-            }
-            else
-            {
-                //Actions.SetForm(Settings.Mode);
+                SetHotkeys(new string[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12" });
+                if (!label12.Enabled)
+                {
+                    //F12 Hotkey failed. Try using an alternate F12 Hotkey:
+                    HotkeyComm._StopHotkeys();
+                    HotkeyComm.HotkeyUnregister("F12");
+                    HotkeyComm.HotkeyRegister("{Shift}F12");
+                    HotkeyComm._StartHotkeys();
+                    if (!label12.Enabled)
+                    {
+                        //F12 Hotkey failed. Try using an alternate F12 Hotkey:
+                        HotkeyComm._StopHotkeys();
+                        HotkeyComm.HotkeyUnregister("{Shift}F12");
+                        HotkeyComm.HotkeyRegister("{CTRL}F12");
+                        HotkeyComm._StartHotkeys();
+                        if (!label12.Enabled)
+                        {
+                            //F12 Hotkey failed. Try using an alternate F12 Hotkey:
+                            HotkeyComm._StopHotkeys();
+                            HotkeyComm.HotkeyUnregister("{CTRL}F12");
+                            HotkeyComm.HotkeyRegister("{ALT}F12");
+                            HotkeyComm._StartHotkeys();
+                            if (!label12.Enabled)
+                            {
+                                HotkeyComm._StopHotkeys();
+                                HotkeyComm.HotkeyUnregister("{ALT}F12");
+                                HotkeyComm._StartHotkeys();
+                            }
+                        }
+                    }
+                }
+                if (Program.Failed && !Settings.HideHotkeyErrors) { MessageBox.Show("One or more Hotkeys failed to register."); }
             }
         }
-        
-        public void SetHotkeys(string[] hklist)
+
+        private void SetHotkeys(string[] hklist)
         {
-            if (hotkeyComm == null)
+            if (HotkeyComm == null)
             {
-                hotkeyComm = new HotkeyCommand(this);
-                hotkeyComm.SetHotkeysGlobally = true;
-                hotkeyComm.SetSuppressExceptions = false;
-                hotkeyComm.KeyActionCall += Actions.onKeyAction; //Do work on keypress using the Action class
-                hotkeyComm.KeyRegisteredCall += Registrations;
-                hotkeyComm.KeyUnregisteredCall += UnRegistrations;
+                HotkeyComm = new HotkeyCommand(this);
+                HotkeyComm.SetHotkeysGlobally = true;
+                HotkeyComm.SetSuppressExceptions = false;
+                HotkeyComm.KeyActionCall += Actions.onKeyAction; //Do work on keypress using the Action class
+                HotkeyComm.KeyRegisteredCall += Registrations;
+                HotkeyComm.KeyUnregisteredCall += UnRegistrations;
                 Actions.ActionComplete += OnActionComplete; //Followup on completed task from the Action class
             }
-            if (hotkeyComm.IsRegistered) { hotkeyComm._StopHotkeys(); }
-            hotkeyComm.HotkeyRegisterList(hklist, true);
-            hotkeyComm._StartHotkeys();
-            if (Program.failed) { MessageBox.Show("One or more Hotkeys failed to register."); }
+            if (HotkeyComm.IsRegistered) { HotkeyComm._StopHotkeys(); }
+            HotkeyComm.HotkeyRegisterList(hklist, true);
+            HotkeyComm._StartHotkeys();
         }
 
         private void Registrations(bool result, string key, short id)
         {
             if (result == false)
             {
+                Program.Failed = true;
                 if (key == "F1") { label1.Enabled = false; }
                 else if (key == "F2") { label2.Enabled = false; }
                 else if (key == "F3") { label3.Enabled = false; }
@@ -99,17 +126,44 @@ namespace Clipboard_Cycler
                 else if (key == "F9") { label9.Enabled = false; }
                 else if (key == "F10") { label10.Enabled = false; }
                 else if (key == "F11") { label11.Enabled = false; }
-                else if (key == "{CTRL}F12") { label12.Enabled = false; }
-                Program.failed = true;
+                else if (key == "F12")
+                {
+                    Program.Failed = false; //set to false, will try again with ctrlf12
+                    label12.Enabled = false;
+                }
+                else if (key == "{Shift}F12") { }
+                else if (key == "{CTRL}F12") { }
+                else if (key == "{ALT}F12") { }
             }
-            Program.programHotkeys.Add(id, key);
+            if (result == true && key == "{Shift}F12")
+            {
+                label12.Enabled = true;
+                label12.Text = "{Shift}F12 =";
+                textBox12.Location = new System.Drawing.Point(70, 231);
+                textBox12.Size = new System.Drawing.Size(158, 18);
+            }
+            else if (result == true && key == "{CTRL}F12")
+            {
+                label12.Enabled = true;
+                label12.Text = "{CTRL}F12 =";
+                textBox12.Location = new System.Drawing.Point(70, 231);
+                textBox12.Size = new System.Drawing.Size(158, 18);
+            }
+            else if (result == true && key == "{ALT}F12")
+            {
+                label12.Enabled = true;
+                label12.Text = "{ALT}F12 =";
+                textBox12.Location = new System.Drawing.Point(70, 231);
+                textBox12.Size = new System.Drawing.Size(158, 18);
+            }
+            Program.ProgramHotkeys.Add(id, key);
         }
         private void UnRegistrations(string key, short id)
         {
-            Program.programHotkeys.Remove(id);
+            Program.ProgramHotkeys.Remove(id);
         }
 
-        public void OnActionComplete(Actions.myActions action, dynamic optional = null)
+        private void OnActionComplete(Actions.myActions action, dynamic optional = null)
         {
             /*
              * Modify the Form after the Action is Completed.
@@ -119,39 +173,40 @@ namespace Clipboard_Cycler
 
             if (action == Actions.myActions.Paste2)
             {
-                if ((string)optional == "F1")
+                string key = (string)optional;
+                if (key == "F1")
                 { Actions.PasteString(textBox1.Text); }
-                else if ((string)optional == "F2")
+                else if (key == "F2")
                 { Actions.PasteString(textBox2.Text); }
-                else if ((string)optional == "F3")
+                else if (key == "F3")
                 { Actions.PasteString(textBox3.Text); }
-                else if ((string)optional == "F4")
+                else if (key == "F4")
                 { Actions.PasteString(textBox4.Text); }
-                else if ((string)optional == "F5")
+                else if (key == "F5")
                 { Actions.PasteString(textBox5.Text); }
-                else if ((string)optional == "F6")
+                else if (key == "F6")
                 { Actions.PasteString(textBox6.Text); }
-                else if ((string)optional == "F7")
+                else if (key == "F7")
                 { Actions.PasteString(textBox7.Text); }
-                else if ((string)optional == "F8")
+                else if (key == "F8")
                 { Actions.PasteString(textBox8.Text); }
-                else if ((string)optional == "F9")
+                else if (key == "F9")
                 { Actions.PasteString(textBox9.Text); }
-                else if ((string)optional == "F10")
+                else if (key == "F10")
                 { Actions.PasteString(textBox10.Text); }
-                else if ((string)optional == "F11")
+                else if (key == "F11")
                 { Actions.PasteString(textBox11.Text); }
-                else if ((string)optional == "{CTRL}F12")
+                else if (key == "F12" || key == "{Shift}F12" || key == "{CTRL}F12" || key == "{ALT}F12")
                 { Actions.PasteString(textBox12.Text); }
             }
             else if (action == Actions.myActions.Esc)
             {
-                mouse._DoubleClick();
+                Mouse._DoubleClick();
             }
 
         }//Fires from Actions after an action has been completed.
 
-        public void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.WinSize = this.Size;
             Settings.WinLoc = this.Location;
@@ -168,7 +223,7 @@ namespace Clipboard_Cycler
             Settings.Form4Fields[10] = textBox11.Text;
             Settings.Form4Fields[11] = textBox12.Text;
             Settings.Save();
-            if (hotkeyComm != null) { hotkeyComm.Dispose(); }
+            if (HotkeyComm != null) { HotkeyComm.Dispose(); }
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -177,7 +232,7 @@ namespace Clipboard_Cycler
             open.InitialDirectory = Directory.GetCurrentDirectory();
             open.Filter = "Executable Files (*.exe, *.bat)|*.exe; *.bat|All files (*.*)|*.*";
             if (open.ShowDialog() == DialogResult.OK)
-            { textBox1.Text = open.FileName;  }
+            { textBox1.Text = open.FileName; }
         }
     }
 }

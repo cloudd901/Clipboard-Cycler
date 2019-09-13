@@ -8,13 +8,14 @@ namespace Clipboard_Cycler
 {
     static class Program
     {
-        public static string myTitle = "Clipboard Cycler";
-        public static FileInfo mySaveFile = null;
-        public static List<string> myList = new List<string>();
-        public static int myIndex = 0;
-        public static bool endOfListPasted = false;
-        public static bool failed = false;
-        public static Dictionary<short, string> programHotkeys = new Dictionary<short, string>();
+        public static string MyTitle { get; } = "Clipboard Cycler";
+        public static FileInfo MySaveFile { get; set; } = null;
+        public static List<string> MyList { get; set; } = new List<string>();
+        public static int MyIndex { get; set; } = 0;
+        public static bool EndOfListPasted { get; set; } = false;
+        public static bool Failed { get; set; } = false;
+        public static Dictionary<short, string> ProgramHotkeys { get; set; } = new Dictionary<short, string>();
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

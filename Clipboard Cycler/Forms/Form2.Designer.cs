@@ -76,6 +76,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.disableHotkeyErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -308,7 +309,8 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem1});
+            this.aboutToolStripMenuItem1,
+            this.disableHotkeyErrorsToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.helpToolStripMenuItem.Text = "&Help";
@@ -316,7 +318,7 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(184, 22);
             this.aboutToolStripMenuItem1.Text = "&About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.AboutToolStripMenuItem1_Click);
             // 
@@ -517,6 +519,13 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
+            // disableHotkeyErrorsToolStripMenuItem
+            // 
+            this.disableHotkeyErrorsToolStripMenuItem.Name = "disableHotkeyErrorsToolStripMenuItem";
+            this.disableHotkeyErrorsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.disableHotkeyErrorsToolStripMenuItem.Text = "Disable Hotkey Errors";
+            this.disableHotkeyErrorsToolStripMenuItem.Click += new System.EventHandler(this.DisableHotkeyErrorsToolStripMenuItem_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -607,6 +616,7 @@
         public System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useSendKeystrokeswDelayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disableHotkeyErrorsToolStripMenuItem;
     }
 }
 

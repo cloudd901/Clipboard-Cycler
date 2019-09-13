@@ -13,12 +13,25 @@ namespace Clipboard_Cycler
             useClipboardPasteToolStripMenuItem.Checked = Settings.UseSendCTRLV;
             useSendKeysToolStripMenuItem.Checked = Settings.UseSendKeys;
             useSendKeystrokeswDelayToolStripMenuItem.Checked = Settings.UseSendKeysDelay;
+            disableHotkeyErrorsToolStripMenuItem.Checked = Settings.HideHotkeyErrors;
         }
 
         private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Forms.AboutBox1 about = new Forms.AboutBox1();
             about.ShowDialog();
+        }
+        private void DisableHotkeyErrorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (disableHotkeyErrorsToolStripMenuItem.Checked)
+            { disableHotkeyErrorsToolStripMenuItem.Checked = false; }
+            else
+            { disableHotkeyErrorsToolStripMenuItem.Checked = true; }
+
+            if (disableHotkeyErrorsToolStripMenuItem.Checked)
+            { Settings.HideHotkeyErrors = true; }
+            else
+            { Settings.HideHotkeyErrors = false; }
         }
 
         private int GetToolStripIndex(object sender)
@@ -63,24 +76,24 @@ namespace Clipboard_Cycler
             else
             { Settings.UseEscape = false; }
 
-            if (hotkeyComm != null)
+            if (HotkeyComm != null)
             {
                 if (Settings.UseEscape)
                 {
                     if (!label1.Text.Contains("Esc = Double Click")) { label1.Text += "\r\nEsc = Double Click"; }
-                    if (!hotkeyComm.HotkeyDictionary.Values.Contains("Escape"))
+                    if (!HotkeyComm.HotkeyDictionary.Values.Contains("Escape"))
                     {
-                        hotkeyComm.HotkeyRegister("Escape");
-                        if (hotkeyComm.IsRegistered) { hotkeyComm._RestartHotkeys(); }
+                        HotkeyComm.HotkeyRegister("Escape");
+                        if (HotkeyComm.IsRegistered) { HotkeyComm._RestartHotkeys(); }
                     }
                 }
                 else
                 {
                     if (label1.Text.Contains("Esc = Double Click")) { label1.Text = label1.Text.Replace("Esc = Double Click", ""); }
-                    if (hotkeyComm.HotkeyDictionary.Values.Contains("Escape"))
+                    if (HotkeyComm.HotkeyDictionary.Values.Contains("Escape"))
                     {
-                        hotkeyComm.HotkeyUnregister("Escape");
-                        if (hotkeyComm.IsRegistered) { hotkeyComm._RestartHotkeys(); }
+                        HotkeyComm.HotkeyUnregister("Escape");
+                        if (HotkeyComm.IsRegistered) { HotkeyComm._RestartHotkeys(); }
                     }
                 }
             }
@@ -93,9 +106,9 @@ namespace Clipboard_Cycler
             { pauseToolStripMenuItem.Checked = true; }
 
             if (pauseToolStripMenuItem.Checked)
-            { hotkeyComm.SetHotkeysGlobally = false; if (hotkeyComm.IsRegistered) { hotkeyComm._StopHotkeys(); } }
+            { HotkeyComm.SetHotkeysGlobally = false; if (HotkeyComm.IsRegistered) { HotkeyComm._StopHotkeys(); } }
             else
-            { hotkeyComm.SetHotkeysGlobally = true; hotkeyComm._StartHotkeys(); }
+            { HotkeyComm.SetHotkeysGlobally = true; HotkeyComm._StartHotkeys(); }
         }
 
         //=================================File Menu Items=====================================
@@ -122,9 +135,9 @@ namespace Clipboard_Cycler
             open.Filter = "Text Files *.txt|*.txt|All files (*.*)|*.*";
             if (open.ShowDialog() == DialogResult.OK)
             {
-                Program.mySaveFile = new FileInfo(open.FileName);
-                Text = Program.myTitle + " - " + Program.mySaveFile.Name;
-                Actions.HandleFileOpen(File.ReadAllText(Program.mySaveFile.FullName));
+                Program.MySaveFile = new FileInfo(open.FileName);
+                Text = Program.MyTitle + " - " + Program.MySaveFile.Name;
+                Actions.HandleFileOpen(File.ReadAllText(Program.MySaveFile.FullName));
             }
         }
         private void SaveAsToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -134,31 +147,20 @@ namespace Clipboard_Cycler
             save.Filter = "Text File *.txt|*.txt|All files (*.*)|*.*";
             if (save.ShowDialog() == DialogResult.OK)
             {
-                Program.mySaveFile = new FileInfo(save.FileName);
-                File.WriteAllText(save.FileName, string.Join(Environment.NewLine, Program.myList.ToArray()));
-                Text = Program.myTitle + " - " + Program.mySaveFile.Name;
+                Program.MySaveFile = new FileInfo(save.FileName);
+                File.WriteAllText(save.FileName, string.Join(Environment.NewLine, Program.MyList.ToArray()));
+                Text = Program.MyTitle + " - " + Program.MySaveFile.Name;
             }
         }
         private void RemoveItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    int temp = Program.myIndex;
-            //    Program.myList.RemoveAt(Program.myIndex);
-            //    CopyFromListToCombo();
-            //    temp = temp < 1 ? 0 : temp >= comboBox1.Items.Count ? temp - 1 : temp;
-            //    comboBox1.SelectedIndex = temp;
-            //    Program.myIndex = comboBox1.SelectedIndex;
-
-            //}
-            //catch { }
         }
         private void SaveToolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
-            if (Program.mySaveFile != null)
+            if (Program.MySaveFile != null)
             {
-                File.WriteAllText(Program.mySaveFile.FullName, string.Join(Environment.NewLine, Program.myList.ToArray()));
+                File.WriteAllText(Program.MySaveFile.FullName, string.Join(Environment.NewLine, Program.MyList.ToArray()));
             }
             else
             {
@@ -167,9 +169,9 @@ namespace Clipboard_Cycler
                 save.Filter = "Text File *.txt|*.txt|All files (*.*)|*.*";
                 if (save.ShowDialog() == DialogResult.OK)
                 {
-                    Program.mySaveFile = new FileInfo(save.FileName);
-                    File.WriteAllText(save.FileName, string.Join(Environment.NewLine, Program.myList.ToArray()));
-                    Text = "Clipboard Cycler - " + Program.mySaveFile.Name;
+                    Program.MySaveFile = new FileInfo(save.FileName);
+                    File.WriteAllText(save.FileName, string.Join(Environment.NewLine, Program.MyList.ToArray()));
+                    Text = "Clipboard Cycler - " + Program.MySaveFile.Name;
                 }
             }
         }

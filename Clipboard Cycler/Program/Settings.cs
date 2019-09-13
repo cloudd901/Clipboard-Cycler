@@ -11,6 +11,7 @@ namespace Clipboard_Cycler
         private static bool useSendCTRLV = false;
         private static bool useSendKeys = true;
         private static bool useSendKeysDelay = false;
+        private static bool hideHotkeyErrors = false;
         private static bool uniqueList = false;
         private static bool sortList = false;
         private static bool trimWS = true;
@@ -18,18 +19,28 @@ namespace Clipboard_Cycler
         private static Point winPos = new Point(0, 0);
         private static Size winSize = new Size(265, 167);
 
+        public static bool UseEscape { get => useEscape; set => useEscape = value; }
+        public static bool UseSendCTRLV { get => useSendCTRLV; set => useSendCTRLV = value; }
+        public static bool UseSendKeys { get => useSendKeys; set => useSendKeys = value; }
+        public static bool UseSendKeysDelay { get => useSendKeysDelay; set => useSendKeysDelay = value; }
+        public static bool HideHotkeyErrors { get => hideHotkeyErrors; set => hideHotkeyErrors = value; }
+        public static bool UniqueList { get => uniqueList; set => uniqueList = value; }
+        public static bool SortList { get => sortList; set => sortList = value; }
+        public static bool TrimWS { get => trimWS; set => trimWS = value; }
+        public static string SavedList { get; set; } = "";
+        public static short Mode { get => mode; set => mode = value; }
+
         public static string[] Form2Fields { get; } = new string[5] { "", "", "", "", "" };
         public static string[] Form3Fields { get; } = new string[5] { "", "", "", "", "" };
         public static string[] Form4Fields { get; } = new string[12] { "", "", "", "", "", "", "", "", "", "", "", "" };
-        
 
-        
         public static void Initialize()
         {
             bool.TryParse(ini.Read("UseEscape"), out useEscape);
             bool.TryParse(ini.Read("UseSendCTRLV"), out useSendCTRLV);
             bool.TryParse(ini.Read("UseSendKeysDelay"), out useSendKeysDelay);
             if (!bool.TryParse(ini.Read("UseSendKeys"), out useSendKeys)) { if (!useSendCTRLV && !useSendKeysDelay) { useSendKeys = true; } }
+            bool.TryParse(ini.Read("HideHotkeyErrors"), out hideHotkeyErrors);
             bool.TryParse(ini.Read("UniqueList"), out uniqueList);
             bool.TryParse(ini.Read("SortList"), out sortList);
             bool.TryParse(ini.Read("TrimWS"), out trimWS);
@@ -56,16 +67,6 @@ namespace Clipboard_Cycler
             }
             catch { winPos = new Point(0, 0); }
         }
-
-        public static bool UseEscape { get => useEscape; set => useEscape = value; }
-        public static bool UseSendCTRLV { get => useSendCTRLV; set => useSendCTRLV = value; }
-        public static bool UseSendKeys { get => useSendKeys; set => useSendKeys = value; }
-        public static bool UseSendKeysDelay { get => useSendKeysDelay; set => useSendKeysDelay = value; }
-        public static bool UniqueList { get => uniqueList; set => uniqueList = value; }
-        public static bool SortList { get => sortList; set => sortList = value; }
-        public static bool TrimWS { get => trimWS; set => trimWS = value; }
-        public static string SavedList { get; set; } = "";
-        public static short Mode { get => mode; set => mode = value; }
 
         public static Point WinLoc
         {
@@ -117,9 +118,10 @@ namespace Clipboard_Cycler
             ini.Write("UseSendKeys", UseSendKeys.ToString());
             ini.Write("UseSendKeysDelay", UseSendKeysDelay.ToString());
             ini.Write("UniqueList", UniqueList.ToString());
+            ini.Write("HideHotkeyErrors", HideHotkeyErrors.ToString());
             ini.Write("SortList", SortList.ToString());
             ini.Write("TrimWS", TrimWS.ToString());
-            ini.Write("SavedList", SavedList.Replace(Environment.NewLine,"~`"));
+            ini.Write("SavedList", SavedList.Replace(Environment.NewLine, "~`"));
             ini.Write("Mode", Mode.ToString());
             ini.Write("WinLoc", winPos.ToString());
             ini.Write("WinSize", winSize.ToString());

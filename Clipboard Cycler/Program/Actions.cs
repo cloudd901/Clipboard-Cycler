@@ -22,8 +22,9 @@ namespace Clipboard_Cycler
             Esc
         };
 
-        public delegate void ActionCompleteEventHandler(myActions action, dynamic optional = null);
         public static event ActionCompleteEventHandler ActionComplete;
+        public delegate void ActionCompleteEventHandler(myActions action, dynamic optional = null);
+        
 
         public static void onKeyAction(Form form, short id, string key)
         {
@@ -60,7 +61,7 @@ namespace Clipboard_Cycler
             List<string> myList;
             if (string.IsNullOrWhiteSpace(text))
             {
-                myList = Program.myList;
+                myList = Program.MyList;
                 newDataCount = myList.Count;
             }
             else
@@ -93,9 +94,9 @@ namespace Clipboard_Cycler
                     if (Settings.UniqueList)
                     { myList = myList.Distinct().ToList(); }
                 }
-                Program.myList = myList;
+                Program.MyList = myList;
                 Clipboard.SetText(temp);
-                Program.myIndex = 0;
+                Program.MyIndex = 0;
             }
             catch
             { }
@@ -110,7 +111,8 @@ namespace Clipboard_Cycler
                 Clipboard.SetText(s);
                 string fixedData = "";
                 if (Settings.UseSendCTRLV) { SendKeys.Send("^v"); Task.Delay(100).Wait(); }
-                else {
+                else
+                {
                     int i = 1;
                     foreach (char c in s)
                     {
@@ -126,7 +128,7 @@ namespace Clipboard_Cycler
                             if (key == "esc" || key == "escape") { key = "Escape"; fixedData = "{Escape}"; }
                             else if (key == "tab") { key = "Tab"; fixedData = "{Tab}"; }
 
-                            if (Program.programHotkeys.ContainsValue(key))
+                            if (Program.ProgramHotkeys.ContainsValue(key))
                             { onKeyAction(null, 0, fixedData); fixedData = ""; continue; }
                         }
 
@@ -172,7 +174,7 @@ namespace Clipboard_Cycler
         {
             int newDataCount = 0;
             List<string> myList;
-            myList = Program.myList;
+            myList = Program.MyList;
             newDataCount = myList.Count;
             try
             {
@@ -195,29 +197,29 @@ namespace Clipboard_Cycler
                     if (Settings.UniqueList)
                     { myList = myList.Distinct().ToList(); }
                 }
-                Program.myList = myList;
+                Program.MyList = myList;
                 Clipboard.SetText(temp);
-                Program.myIndex = 0;
+                Program.MyIndex = 0;
             }
             catch
             { }
-            newDataCount = newDataCount==0 ? myList.Count: newDataCount-myList.Count;
+            newDataCount = newDataCount == 0 ? myList.Count : newDataCount - myList.Count;
             ActionComplete?.Invoke(myActions.Copy, newDataCount);
         }
         private static void PastePressed()
         {
-            if (Program.myIndex == Program.myList.Count-1 && Program.endOfListPasted == true)
+            if (Program.MyIndex == Program.MyList.Count - 1 && Program.EndOfListPasted == true)
             { }
             else
             {
-                if (Program.myIndex == Program.myList.Count-1) { Program.endOfListPasted = true; }
-                else { Program.endOfListPasted = false; }
-                List<string> myList = Program.myList;
+                if (Program.MyIndex == Program.MyList.Count - 1) { Program.EndOfListPasted = true; }
+                else { Program.EndOfListPasted = false; }
+                List<string> myList = Program.MyList;
                 string selectedText = "";
                 try
                 {
-                    PasteString(myList[Program.myIndex]);
-                    Program.myIndex++; if (Program.myIndex > myList.Count) { Program.myIndex = myList.Count; }
+                    PasteString(myList[Program.MyIndex]);
+                    Program.MyIndex++; if (Program.MyIndex > myList.Count) { Program.MyIndex = myList.Count; }
                 }
                 catch
                 { }
@@ -315,10 +317,20 @@ namespace Clipboard_Cycler
             if (Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F12"); }
         }
+        private static void HandleHotkeyShiftF12()
+        {
+            if (Settings.Mode == 4)
+            { ActionComplete?.Invoke(myActions.Paste2, "{Shift}F12"); }
+        }
         private static void HandleHotkeyCTRLF12()
         {
             if (Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "{CTRL}F12"); }
+        }
+        private static void HandleHotkeyALTF12()
+        {
+            if (Settings.Mode == 4)
+            { ActionComplete?.Invoke(myActions.Paste2, "{ALT}F12"); }
         }
 
         //==========================================================

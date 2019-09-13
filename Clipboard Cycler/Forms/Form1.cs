@@ -17,8 +17,8 @@ namespace Clipboard_Cycler
 {
     public partial class Form1 : HotkeysExtensionForm
     {
-        public HotkeyCommand hotkeyComm;
-        public MouseCommand mouse = new MouseCommand();
+        private HotkeyCommand HotkeyComm { get; set; } = null;
+        private MouseCommand Mouse { get; set; } = new MouseCommand();
 
         public Form1()
         {
@@ -28,17 +28,17 @@ namespace Clipboard_Cycler
 
             InitializeComponent();
 
-            Text = Program.myTitle;
+            Text = Program.MyTitle;
             Size = Settings.WinSize;
             Location = Settings.WinLoc;
 
             SetMenuItems();
             SetGUIandHotkeys();
-            
+
             Actions.HandleFileOpen(Settings.SavedList.Replace("~`", Environment.NewLine));
         }
 
-        public void SetGUIandHotkeys()
+        private void SetGUIandHotkeys()
         {
             cycleOnlyToolStripMenuItem.Checked = Settings.Mode == 1 ? true : false;
             cycleWFunctionsToolStripMenuItem.Checked = Settings.Mode == 2 ? true : false;
@@ -51,48 +51,48 @@ namespace Clipboard_Cycler
             }
         }
 
-        public void SetHotkeys(string[] hklist)
+        private void SetHotkeys(string[] hklist)
         {
-            if (hotkeyComm == null)
+            if (HotkeyComm == null)
             {
-                hotkeyComm = new HotkeyCommand(this);
-                hotkeyComm.SetHotkeysGlobally = true;
-                hotkeyComm.SetSuppressExceptions = false;
-                hotkeyComm.KeyActionCall += Actions.onKeyAction; //Do work on keypress using the Action class
-                hotkeyComm.KeyRegisteredCall += Registrations;
-                hotkeyComm.KeyUnregisteredCall += UnRegistrations;
+                HotkeyComm = new HotkeyCommand(this);
+                HotkeyComm.SetHotkeysGlobally = true;
+                HotkeyComm.SetSuppressExceptions = false;
+                HotkeyComm.KeyActionCall += Actions.onKeyAction; //Do work on keypress using the Action class
+                HotkeyComm.KeyRegisteredCall += Registrations;
+                HotkeyComm.KeyUnregisteredCall += UnRegistrations;
                 Actions.ActionComplete += OnActionComplete; //Followup on completed task from the Action class
             }
-            if (hotkeyComm.IsRegistered) { hotkeyComm._StopHotkeys(); }
-            hotkeyComm.HotkeyRegisterList(hklist, true);
+            if (HotkeyComm.IsRegistered) { HotkeyComm._StopHotkeys(); }
+            HotkeyComm.HotkeyRegisterList(hklist, true);
             if (Settings.UseEscape)
             {
                 if (!label1.Text.Contains("Esc = Double Click")) { label1.Text += "\r\nEsc = Double Click"; }
-                if (!hotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { hotkeyComm.HotkeyRegister("Escape"); }
+                if (!HotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { HotkeyComm.HotkeyRegister("Escape"); }
             }
             else if (!Settings.UseEscape)
             {
 
                 if (label1.Text.Contains("Esc = Double Click")) { label1.Text = label1.Text.Replace("Esc = Double Click", ""); }
-                if (hotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { hotkeyComm.HotkeyUnregister("Escape"); }
+                if (HotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { HotkeyComm.HotkeyUnregister("Escape"); }
             }
-            hotkeyComm._StartHotkeys();
-            if (Program.failed) { MessageBox.Show("One or more Hotkeys failed to register."); }
+            HotkeyComm._StartHotkeys();
+            if (Program.Failed && !Settings.HideHotkeyErrors) { MessageBox.Show("One or more Hotkeys failed to register."); }
         }
         private void Registrations(bool result, string key, short id)
         {
             if (result == false)
             {
                 if (key == "F1" || key == "F2") { comboBox1.Enabled = false; }
-                Program.failed = true;
+                Program.Failed = true;
             }
-            Program.programHotkeys.Add(id, key);
+            Program.ProgramHotkeys.Add(id, key);
         }
         private void UnRegistrations(string key, short id)
         {
-            Program.programHotkeys.Remove(id);
+            Program.ProgramHotkeys.Remove(id);
         }
-        public void OnActionComplete(Actions.myActions action, dynamic optional = null)
+        private void OnActionComplete(Actions.myActions action, dynamic optional = null)
         {
             /*
              * Modify the Form after the Action is Completed.
@@ -110,32 +110,32 @@ namespace Clipboard_Cycler
                 try
                 { comboBox1.SelectedIndex++; }
                 catch { }
-                Program.myIndex = comboBox1.SelectedIndex;
-                if (Program.endOfListPasted) { label2.Text = "End/" + comboBox1.Items.Count; }
+                Program.MyIndex = comboBox1.SelectedIndex;
+                if (Program.EndOfListPasted) { label2.Text = "End/" + comboBox1.Items.Count; }
             }
             else if (action == Actions.myActions.Esc)
             {
-                mouse._DoubleClick();
+                Mouse._DoubleClick();
             }
         }//Fires from Actions after an action has been completed.
 
-        public void CopyFromListToCombo()
+        private void CopyFromListToCombo()
         {
             comboBox1.Items.Clear();
-            foreach (string s in Program.myList)
+            foreach (string s in Program.MyList)
             { comboBox1.Items.Add(Settings.TrimWS ? s.Trim() : s); }
             CopyFromReset();
         }
-        public void CopyFromComboToList()
+        private void CopyFromComboToList()
         {
-            Program.myList.Clear();
+            Program.MyList.Clear();
             foreach (string s in comboBox1.Items)
-            { Program.myList.Add(Settings.TrimWS ? s.Trim() : s); }
+            { Program.MyList.Add(Settings.TrimWS ? s.Trim() : s); }
             CopyFromReset();
         }
-        public void CopyFromReset()
+        private void CopyFromReset()
         {
-            Program.myIndex = 0;
+            Program.MyIndex = 0;
             try { comboBox1.SelectedIndex = 0; } catch { }
             label2.Text = comboBox1.Items.Count > 0 ? "1/" + comboBox1.Items.Count : label2.Text = "0/0";
         }
@@ -146,13 +146,13 @@ namespace Clipboard_Cycler
             Settings.WinSize = this.Size;
             Settings.WinLoc = this.Location;
             Settings.Save();
-            if (hotkeyComm != null) { hotkeyComm.Dispose(); }
+            if (HotkeyComm != null) { HotkeyComm.Dispose(); }
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Program.endOfListPasted = false;
-            Program.myIndex = comboBox1.SelectedIndex;
+            Program.EndOfListPasted = false;
+            Program.MyIndex = comboBox1.SelectedIndex;
             label2.Text = comboBox1.SelectedIndex + 1 + "/" + comboBox1.Items.Count;
         }
         private void Label1_TextChanged(object sender, EventArgs e)

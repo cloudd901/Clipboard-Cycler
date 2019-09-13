@@ -57,6 +57,7 @@
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableHotkeyErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -293,7 +294,8 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem1});
+            this.aboutToolStripMenuItem1,
+            this.disableHotkeyErrorsToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.helpToolStripMenuItem.Text = "&Help";
@@ -301,9 +303,16 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(184, 22);
             this.aboutToolStripMenuItem1.Text = "&About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.AboutToolStripMenuItem1_Click);
+            // 
+            // disableHotkeyErrorsToolStripMenuItem
+            // 
+            this.disableHotkeyErrorsToolStripMenuItem.Name = "disableHotkeyErrorsToolStripMenuItem";
+            this.disableHotkeyErrorsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.disableHotkeyErrorsToolStripMenuItem.Text = "Disable Hotkey Errors";
+            this.disableHotkeyErrorsToolStripMenuItem.Click += new System.EventHandler(this.DisableHotkeyErrorsToolStripMenuItem_Click);
             // 
             // menuStrip1
             // 
@@ -535,10 +544,10 @@
             this.textBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox12.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox12.Location = new System.Drawing.Point(70, 231);
+            this.textBox12.Location = new System.Drawing.Point(42, 231);
             this.textBox12.Margin = new System.Windows.Forms.Padding(2);
             this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(158, 18);
+            this.textBox12.Size = new System.Drawing.Size(186, 18);
             this.textBox12.TabIndex = 31;
             // 
             // label11
@@ -570,9 +579,9 @@
             this.label12.Location = new System.Drawing.Point(4, 233);
             this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(62, 13);
+            this.label12.Size = new System.Drawing.Size(34, 13);
             this.label12.TabIndex = 32;
-            this.label12.Text = "CTRL F12 =";
+            this.label12.Text = "F12 =";
             // 
             // textBox10
             // 
@@ -688,6 +697,7 @@
         public System.Windows.Forms.Label label12;
         public System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.ToolStripMenuItem useSendKeystrokeswDelayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disableHotkeyErrorsToolStripMenuItem;
     }
 }
 

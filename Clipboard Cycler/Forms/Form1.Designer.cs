@@ -62,6 +62,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.disableHotkeyErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -286,7 +287,8 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem1});
+            this.aboutToolStripMenuItem1,
+            this.disableHotkeyErrorsToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.helpToolStripMenuItem.Text = "&Help";
@@ -294,7 +296,7 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(184, 22);
             this.aboutToolStripMenuItem1.Text = "&About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.AboutToolStripMenuItem1_Click);
             // 
@@ -349,6 +351,13 @@
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Last Paste:";
+            // 
+            // disableHotkeyErrorsToolStripMenuItem
+            // 
+            this.disableHotkeyErrorsToolStripMenuItem.Name = "disableHotkeyErrorsToolStripMenuItem";
+            this.disableHotkeyErrorsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.disableHotkeyErrorsToolStripMenuItem.Text = "Disable Hotkey Errors";
+            this.disableHotkeyErrorsToolStripMenuItem.Click += new System.EventHandler(this.DisableHotkeyErrorsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -413,6 +422,7 @@
         public System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         public System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useSendKeystrokeswDelayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disableHotkeyErrorsToolStripMenuItem;
     }
 }
 
