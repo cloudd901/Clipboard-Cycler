@@ -43,10 +43,10 @@ Some F keys can be used to run applications such as F4 on the 2nd and 3rd Forms.
 Other F keys can be used to simply paste text entered in the adjacent textbox.
  - Any text is allowed except the backquote( ` ) as it is used for saving and retrieving data.
 
-When using the Paste lines, you can send special keys by using brackets { }.
+When using the SendKeystrokes Setting; you can send special keys by using brackets { }.
  - Example: To use a Paste key as an Enter key, use {Enter}.
  - Other keys can be chained together such as calling {F5} from F6.
- - You can use multiple keys within a single textbox.
+ - Example: [Text{Tab}{F8}{Enter}]
 
 </br></br>
 <b>Known Issues</b>
