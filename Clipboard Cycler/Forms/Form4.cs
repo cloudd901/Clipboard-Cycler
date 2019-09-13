@@ -139,21 +139,21 @@ namespace Clipboard_Cycler
             {
                 label12.Enabled = true;
                 label12.Text = "{Shift}F12 =";
-                textBox12.Location = new System.Drawing.Point(70, 231);
+                textBox12.Location = new System.Drawing.Point(69, 231);
                 textBox12.Size = new System.Drawing.Size(158, 18);
             }
             else if (result == true && key == "{CTRL}F12")
             {
                 label12.Enabled = true;
                 label12.Text = "{CTRL}F12 =";
-                textBox12.Location = new System.Drawing.Point(70, 231);
+                textBox12.Location = new System.Drawing.Point(69, 231);
                 textBox12.Size = new System.Drawing.Size(158, 18);
             }
             else if (result == true && key == "{ALT}F12")
             {
                 label12.Enabled = true;
                 label12.Text = "{ALT}F12 =";
-                textBox12.Location = new System.Drawing.Point(70, 231);
+                textBox12.Location = new System.Drawing.Point(69, 231);
                 textBox12.Size = new System.Drawing.Size(158, 18);
             }
             Program.ProgramHotkeys.Add(id, key);
