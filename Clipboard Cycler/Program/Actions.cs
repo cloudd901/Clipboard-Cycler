@@ -3,22 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsInput;
-using WindowsInput.Native;
+using SendInputKeyCommands;
 
 namespace Clipboard_Cycler
 {
     public static class Actions
     {
-        [DllImport("user32.dll")]
-        static extern IntPtr GetForegroundWindow();
-        [DllImport("user32.dll")]
-        static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder text, int count);
-
         private static Type myType = Type.GetType("Clipboard_Cycler.Actions");
         public enum myActions
         {
@@ -111,126 +103,76 @@ namespace Clipboard_Cycler
             newDataCount -= myList.Count;
             ActionComplete?.Invoke(myActions.Copy, newDataCount);
         }
-        private static string GetWindowTitle(IntPtr handle)
-        {
-            const int nChars = 256;
-            StringBuilder Buff = new StringBuilder(nChars);
-            if (GetWindowText(handle, Buff, nChars) > 0)
-            {
-                return Buff.ToString();
-            }
-            return null;
-        }
+
         public static void PasteString(string s)
         {
-            bool useSendMessage = false;
-            IntPtr handle = GetForegroundWindow();
-            string windowTitle = GetWindowTitle(handle);
-            InputSimulator inputSimulator = new InputSimulator();
-
-            if (windowTitle.Contains("Remote Desktop")) { useSendMessage = true; }
+            SendInputKeyCommand sendKeyComm = new SendInputKeyCommand();
             try
             {
                 Clipboard.SetText(s);
-                string fixedData = "";
-                if (Settings.UseSendCTRLV) { SendKeys.Send("^v"); Task.Delay(100).Wait(); }
+                string keyDataString = "";
+                if (Settings.UseSendCTRLV)
+                {
+                    sendKeyComm.SendKeyDown("CTRL");
+                    sendKeyComm.SendKeyPress("v");
+                    sendKeyComm.SendKeyUp("CTRL");
+                    Task.Delay(100).Wait();
+                }
                 else
                 {
+                    
                     int i = 1;
+                    char prev = ' ';
                     foreach (char c in s)
                     {
-                        if (c == '{') { fixedData += c; continue; }
-                        else if (fixedData != "") { fixedData += c; if (c != '}') { continue; } }
-                        else { fixedData = FixString(c.ToString()); }
+                        if (c == '{' && s.Contains("}")) { keyDataString += c; continue; }
+                        else if (keyDataString != "") { keyDataString += c; if (c != '}') { continue; } }
+                        else { keyDataString = c.ToString(); }
 
-                        if (fixedData.StartsWith("{"))
+                        if (keyDataString.StartsWith("{"))
                         {
-                            string key = fixedData.Replace("{", "").Replace("}", "");
-                            if (key == "esc" || key == "escape") { key = "Escape"; fixedData = "{Escape}"; }
-                            else if (key == "tab") { key = "Tab"; fixedData = "{Tab}"; }
+                            string key = keyDataString.Replace("{", "").Replace("}", "");
+                            if (key == "esc" || key == "escape") { key = "Escape"; keyDataString = "{Escape}"; }
+                            else if (key == "tab") { key = "Tab"; keyDataString = "{Tab}"; }
 
-                            //Fixes issue in which hotkeys don't fire through Sendkeys
+                            //Optional delay in text
+                            try { Task.Delay((int)(decimal.Parse(key)*1000m)).Wait(); keyDataString = ""; i = 0; continue; } catch { }
+
+                            //Fixes issue in which hotkeys don't fire correctly through Sendkeys
                             if (Program.ProgramHotkeys.ContainsValue(key))
-                            { onKeyAction(null, 0, fixedData); fixedData = ""; continue; }
-                        }
-
-                        if (useSendMessage)
-                        {
-                            //Fixes issue with Remote Desktop Connections not receiving Sendkeys
-                            VirtualKeyCode vcd = VirtualKeyCode.CANCEL;
-                            try { vcd = StringToVKC(fixedData); } catch { }
-                            if (vcd != VirtualKeyCode.CANCEL)
-                            {
-                                if (Char.IsUpper(fixedData.ToCharArray()[0]))
-                                {
-                                    inputSimulator.Keyboard.KeyDown(VirtualKeyCode.SHIFT);
-                                    inputSimulator.Keyboard.KeyPress(vcd);
-                                    inputSimulator.Keyboard.KeyUp(VirtualKeyCode.SHIFT);
-                                }
-                                else
-                                {
-                                    inputSimulator.Keyboard.KeyPress(vcd);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            SendKeys.SendWait(fixedData);
+                            { onKeyAction(null, 0, keyDataString); keyDataString = ""; i = 0; continue; }
                         }
 
                         if (Settings.UseSendKeysDelay)
                         {
-                            if (i == 1) { Task.Delay(300).Wait(); }
-                            else if (i == 2) { Task.Delay(200).Wait(); }
-                            else if (i == 3) { Task.Delay(100).Wait(); }
-                            else { Task.Delay(5).Wait(); }
+                            if (prev == ' ' && char.IsUpper(c)) { Task.Delay(600).Wait(); i = 0; }
+                            else if (prev == c) { Task.Delay(50).Wait(); }
+                            else if (i < 4) { Task.Delay((new Random().Next(50, 200))).Wait(); }
+                            else if (i >= 4 && i < 9) { Task.Delay((new Random().Next(100, 300))).Wait(); }
+                            else if (i >= 9) { Task.Delay((new Random().Next(10, 100))).Wait(); }
+                            prev = c;
+                            i++;
                         }
-                        else { Task.Delay(1).Wait(); }
+                        else { Task.Delay(5).Wait(); }
 
-                        fixedData = "";
-                        i++;
+                        sendKeyComm.SendKeyPress(keyDataString);
+
+                        keyDataString = "";
+                       
                     }
                 }
             }
             catch
             { }
         }
-        private static VirtualKeyCode StringToVKC(String s)
-        {
-            try
-            {
-                return (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), "VK_" + s.ToUpper(), false);
-            }
-            catch
-            {
-                try
-                {
-                    if (s == " ") { return (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), "SPACE", false); }
-                    else if (s == ".") { return (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), "DECIMAL", false); }
-                    else if (s == "{Enter}") { return (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), "RETURN", false); }
-                    else { return (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), s.Replace("{", "").Replace("}", "").ToUpper(), false); }
-                }
-                catch
-                {
-                    throw new InvalidCastException("Unable to set VirtualKeyCode from String");
-                }
-            }
-        }
 
-        private static string FixString(string s)
-        {
-            if (s == "+" || s == "^" || s == "%") { s = "{" + s + "}"; }
-            return s;
-        }
         public static void RunProcess(string s, string[] a = null)
         {
             ProcessStartInfo start = new ProcessStartInfo();
-            //start.UseShellExecute = false;
             start.FileName = s;
             try { start.Arguments = $"\"{string.Join("\" \"", a)}\""; } catch { }
             try { Process.Start(start); }
             catch (Exception e) { MessageBox.Show(e.Message); }
-
         }
 
         //==========================================================
