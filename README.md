@@ -46,7 +46,8 @@ Other F keys can be used to simply paste text entered in the adjacent textbox.
 When using the SendKeystrokes Setting; you can send special keys by using brackets { }.
  - Example: To use a Paste key as an Enter key, use {Enter}.
  - Other keys can be chained together such as calling {F5} from F6.
- - Example: [Text{Tab}{F8}{Enter}]
+   - Example: [Text{Tab}{F8}{Enter}]
+ - You can also send delays by entering a bracketed number such as {2} for a 2 second delay.
 
 </br></br>
 <b>Known Issues</b>
