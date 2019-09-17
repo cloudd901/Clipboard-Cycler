@@ -57,4 +57,4 @@ Depending on where you launch the Clipboard Cycler, you may get an 'Open File Se
 If so, the application will not automatically reopen when switching Window types.
 
 When using Paste Only mode, some workstations will not allow F12 as a Hotkey.
-The program will the attempt to use {Shift}F12, {CTRL}F12, then {ALT}F12 as a backup Hotkey.
+The program will the attempt to use {CTRL}F12, {Shift}F12, then {ALT}F12 as a backup Hotkey.
