@@ -72,7 +72,10 @@ namespace Clipboard_Cycler
                 if (string.IsNullOrWhiteSpace(text))
                 {
                     Clipboard.Clear();
-                    SendKeys.Send("^c");
+                    SendInputKeyCommand sendKeyComm = new SendInputKeyCommand();
+                    sendKeyComm.SendKeyDown(SendInputKeyCommand.VirtualKeyCode.CONTROL);
+                    sendKeyComm.SendKeyPress(SendInputKeyCommand.VirtualKeyCode.KEY_C);
+                    sendKeyComm.SendKeyUp(SendInputKeyCommand.VirtualKeyCode.CONTROL);
                     data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 }
                 else
@@ -187,7 +190,10 @@ namespace Clipboard_Cycler
                 string temp = Clipboard.GetText();
                 Clipboard.Clear();
                 System.Threading.Tasks.Task.Delay(50).Wait();
-                SendKeys.Send("^c");
+                SendInputKeyCommand sendKeyComm = new SendInputKeyCommand();
+                sendKeyComm.SendKeyDown(SendInputKeyCommand.VirtualKeyCode.CONTROL);
+                sendKeyComm.SendKeyPress(SendInputKeyCommand.VirtualKeyCode.KEY_C);
+                sendKeyComm.SendKeyUp(SendInputKeyCommand.VirtualKeyCode.CONTROL);
                 System.Threading.Tasks.Task.Delay(100).Wait();
                 data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 data.RemoveAll(x => x == "");
@@ -234,7 +240,8 @@ namespace Clipboard_Cycler
         }
         private static void EnterPressed()
         {
-            SendKeys.Send("{Enter}");
+            SendInputKeyCommand sendKeyComm = new SendInputKeyCommand();
+            sendKeyComm.SendKeyPress(SendInputKeyCommand.VirtualKeyCode.RETURN);
             ActionComplete?.Invoke(myActions.Enter);
         }
         private static void HandleHotkeyF1()
