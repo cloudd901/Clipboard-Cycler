@@ -223,7 +223,8 @@ namespace Clipboard_Cycler
                 string selectedText = "";
                 try
                 {
-                    PasteString(myList[Program.MyIndex]);
+                    selectedText = myList[Program.MyIndex];
+                    PasteString(selectedText);
                     Program.MyIndex++; if (Program.MyIndex > myList.Count) { Program.MyIndex = myList.Count; }
                 }
                 catch

@@ -35,16 +35,18 @@ namespace Clipboard_Cycler
         {
             using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
             { Type.GetType("Clipboard_Cycler.Program").GetMethod($"RunForm{Settings.Mode}").Invoke(null, null); }
+            if (formThread != null) { formThread.SetApartmentState(ApartmentState.STA); formThread.Start(); }
         }
 
+        internal static Thread formThread = null;
         //Practice and Proof of Concept using reflections instead of if statements.
         public static void RunForm1()
-        { new Thread(() => Application.Run(new Form1())).Start(); }
+        { formThread = new Thread(() => Application.Run(new Form1())); }
         public static void RunForm2()
-        { new Thread(() => Application.Run(new Form2())).Start(); }
+        { formThread = new Thread(() => Application.Run(new Form2())); }
         public static void RunForm3()
-        { new Thread(() => Application.Run(new Form3())).Start(); }
+        { formThread = new Thread(() => Application.Run(new Form3())); }
         public static void RunForm4()
-        { new Thread(() => Application.Run(new Form4())).Start(); }
+        { formThread = new Thread(() => Application.Run(new Form4())); }
     }
 }
