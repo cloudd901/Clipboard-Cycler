@@ -6,7 +6,7 @@ namespace Clipboard_Cycler
 {
     public static class Settings
     {
-        private static readonly IniFile ini = new IniFile(Path.GetTempPath() + "\\ClipboardCycler.ini");
+        private static IniFile ini;
         private static bool useEscape = true;
         private static bool useSendCTRLV = false;
         private static bool useSendKeys = true;
@@ -36,6 +36,10 @@ namespace Clipboard_Cycler
 
         public static void Initialize()
         {
+            string iniLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + Program.MyTitle;
+            if (!Directory.Exists(iniLocation)) { Directory.CreateDirectory(iniLocation); }
+            ini = new IniFile($"{iniLocation}\\{Program.MyTitle}.ini");
+
             bool.TryParse(ini.Read("UseEscape"), out useEscape);
             bool.TryParse(ini.Read("UseSendCTRLV"), out useSendCTRLV);
             bool.TryParse(ini.Read("UseSendKeysDelay"), out useSendKeysDelay);

@@ -65,20 +65,20 @@ namespace Clipboard_Cycler
                     //F12 Hotkey failed. Try using an alternate F12 Hotkey:
                     HotkeyComm._StopHotkeys();
                     HotkeyComm.HotkeyUnregister("F12");
-                    HotkeyComm.HotkeyRegister("{Shift}F12");
+                    HotkeyComm.HotkeyRegister("{CTRL}F12");
                     HotkeyComm._StartHotkeys();
                     if (!label12.Enabled)
                     {
                         //F12 Hotkey failed. Try using an alternate F12 Hotkey:
                         HotkeyComm._StopHotkeys();
-                        HotkeyComm.HotkeyUnregister("{Shift}F12");
-                        HotkeyComm.HotkeyRegister("{CTRL}F12");
+                        HotkeyComm.HotkeyUnregister("{CTRL}F12");
+                        HotkeyComm.HotkeyRegister("{Shift}F12");
                         HotkeyComm._StartHotkeys();
                         if (!label12.Enabled)
                         {
                             //F12 Hotkey failed. Try using an alternate F12 Hotkey:
                             HotkeyComm._StopHotkeys();
-                            HotkeyComm.HotkeyUnregister("{CTRL}F12");
+                            HotkeyComm.HotkeyUnregister("{Shift}F12");
                             HotkeyComm.HotkeyRegister("{ALT}F12");
                             HotkeyComm._StartHotkeys();
                             if (!label12.Enabled)
@@ -132,9 +132,9 @@ namespace Clipboard_Cycler
                     Program.Failed = false; //set to false, will try again with ctrlf12
                     label12.Enabled = false;
                 }
-                else if (key == "{Shift}F12") { }
-                else if (key == "{CTRL}F12") { }
-                else if (key == "{ALT}F12") { }
+                else if (key == "{CTRL}F12") { Program.Failed = false; }//try2
+                else if (key == "{Shift}F12") { Program.Failed = false; }//try3
+                else if (key == "{ALT}F12") { }//try4
             }
             if (result == true && key == "{Shift}F12")
             {

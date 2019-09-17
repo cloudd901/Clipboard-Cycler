@@ -1,5 +1,4 @@
-﻿using Clipboard_Cycler.Forms;
-using Microsoft.VisualStudio.Utilities;
+﻿using Microsoft.VisualStudio.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
