@@ -1,11 +1,11 @@
-﻿using SendInputKeyCommands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SendInputKeyCommands.SendInputKeyCommand;
 
 namespace Clipboard_Cycler
 {
@@ -72,10 +72,9 @@ namespace Clipboard_Cycler
                 if (string.IsNullOrWhiteSpace(text))
                 {
                     Clipboard.Clear();
-                    SendInputKeyCommand sendKeyComm = new SendInputKeyCommand();
-                    sendKeyComm.SendKeyDown(SendInputKeyCommand.VirtualKeyCode.CONTROL);
-                    sendKeyComm.SendKeyPress(SendInputKeyCommand.VirtualKeyCode.KEY_C);
-                    sendKeyComm.SendKeyUp(SendInputKeyCommand.VirtualKeyCode.CONTROL);
+                    Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
+                    Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
+                    Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
                     data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 }
                 else
@@ -106,16 +105,15 @@ namespace Clipboard_Cycler
 
         public static void PasteString(string s)
         {
-            SendInputKeyCommand sendKeyComm = new SendInputKeyCommand();
             try
             {
                 Clipboard.SetText(s);
                 string keyDataString = "";
                 if (Settings.UseSendCTRLV)
                 {
-                    sendKeyComm.SendKeyDown("CTRL");
-                    sendKeyComm.SendKeyPress("v");
-                    sendKeyComm.SendKeyUp("CTRL");
+                    Program.SendKeyComm.SendKeyDown("CTRL");
+                    Program.SendKeyComm.SendKeyPress("v");
+                    Program.SendKeyComm.SendKeyUp("CTRL");
                     Task.Delay(100).Wait();
                 }
                 else
@@ -155,7 +153,7 @@ namespace Clipboard_Cycler
                         }
                         else { Task.Delay(5).Wait(); }
 
-                        sendKeyComm.SendKeyPress(keyDataString);
+                        Program.SendKeyComm.SendKeyPress(keyDataString);
 
                         keyDataString = "";
                        
@@ -190,10 +188,9 @@ namespace Clipboard_Cycler
                 string temp = Clipboard.GetText();
                 Clipboard.Clear();
                 System.Threading.Tasks.Task.Delay(50).Wait();
-                SendInputKeyCommand sendKeyComm = new SendInputKeyCommand();
-                sendKeyComm.SendKeyDown(SendInputKeyCommand.VirtualKeyCode.CONTROL);
-                sendKeyComm.SendKeyPress(SendInputKeyCommand.VirtualKeyCode.KEY_C);
-                sendKeyComm.SendKeyUp(SendInputKeyCommand.VirtualKeyCode.CONTROL);
+                Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
+                Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
+                Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
                 System.Threading.Tasks.Task.Delay(100).Wait();
                 data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 data.RemoveAll(x => x == "");
@@ -240,8 +237,7 @@ namespace Clipboard_Cycler
         }
         private static void EnterPressed()
         {
-            SendInputKeyCommand sendKeyComm = new SendInputKeyCommand();
-            sendKeyComm.SendKeyPress(SendInputKeyCommand.VirtualKeyCode.RETURN);
+            Program.SendKeyComm.SendKeyPress("{Enter}");
             ActionComplete?.Invoke(myActions.Enter);
         }
         private static void HandleHotkeyF1()

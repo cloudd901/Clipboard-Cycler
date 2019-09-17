@@ -19,7 +19,6 @@ namespace Clipboard_Cycler
     public partial class Form3 : HotkeysExtensionForm
     {
         private HotkeyCommand HotkeyComm { get; set; } = null;
-        private MouseCommand Mouse { get; set; } = null;
 
         public Form3()
         {
@@ -40,7 +39,6 @@ namespace Clipboard_Cycler
 
             SetMenuItems();
             SetGUIandHotkeys();
-            Mouse = new MouseCommand();
 
             Actions.HandleFileOpen(Settings.SavedList.Replace("~`", Environment.NewLine));
         }
@@ -149,7 +147,7 @@ namespace Clipboard_Cycler
             }
             else if (action == Actions.myActions.Esc)
             {
-                Mouse._DoubleClick();
+                Program.Mouse._DoubleClick();
             }
 
         }//Fires from Actions after an action has been completed.
@@ -187,9 +185,7 @@ namespace Clipboard_Cycler
             Settings.Form3Fields[4] = textBox5.Text;
             Settings.Save();
             if (HotkeyComm != null) { HotkeyComm.Dispose(); HotkeyComm = null; }
-            if (Mouse != null) { Mouse = null; }
             if (!Actions.SwitchingForms) { Environment.Exit(0); }
-            //Dispose();
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)

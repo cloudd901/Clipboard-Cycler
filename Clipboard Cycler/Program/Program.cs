@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.Utilities;
+using MouseCommands;
+using SendInputKeyCommands;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +18,8 @@ namespace Clipboard_Cycler
         public static bool EndOfListPasted { get; set; } = false;
         public static bool Failed { get; set; } = false;
         public static Dictionary<short, string> ProgramHotkeys { get; set; } = new Dictionary<short, string>();
+        public static SendInputKeyCommand SendKeyComm { get; } = new SendInputKeyCommand();
+        public static MouseCommand Mouse { get; } = new MouseCommand();
 
         /// <summary>
         /// The main entry point for the application.
@@ -24,7 +28,6 @@ namespace Clipboard_Cycler
         static void Main()
         {
             Settings.Initialize();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
