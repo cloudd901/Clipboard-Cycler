@@ -59,6 +59,7 @@
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableHotkeyErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -76,7 +77,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.disableHotkeyErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -322,6 +322,13 @@
             this.aboutToolStripMenuItem1.Text = "&About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.AboutToolStripMenuItem1_Click);
             // 
+            // disableHotkeyErrorsToolStripMenuItem
+            // 
+            this.disableHotkeyErrorsToolStripMenuItem.Name = "disableHotkeyErrorsToolStripMenuItem";
+            this.disableHotkeyErrorsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.disableHotkeyErrorsToolStripMenuItem.Text = "Disable Hotkey Errors";
+            this.disableHotkeyErrorsToolStripMenuItem.Click += new System.EventHandler(this.DisableHotkeyErrorsToolStripMenuItem_Click);
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -519,13 +526,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // disableHotkeyErrorsToolStripMenuItem
-            // 
-            this.disableHotkeyErrorsToolStripMenuItem.Name = "disableHotkeyErrorsToolStripMenuItem";
-            this.disableHotkeyErrorsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.disableHotkeyErrorsToolStripMenuItem.Text = "Disable Hotkey Errors";
-            this.disableHotkeyErrorsToolStripMenuItem.Click += new System.EventHandler(this.DisableHotkeyErrorsToolStripMenuItem_Click);
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -560,6 +560,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Clipboard Cycler";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Shown += new System.EventHandler(this.Form2_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

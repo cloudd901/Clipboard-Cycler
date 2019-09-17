@@ -18,7 +18,7 @@ namespace Clipboard_Cycler
     public partial class Form1 : HotkeysExtensionForm
     {
         private HotkeyCommand HotkeyComm { get; set; } = null;
-        private MouseCommand Mouse { get; set; } = new MouseCommand();
+        private MouseCommand Mouse { get; set; } = null;
 
         public Form1()
         {
@@ -34,6 +34,7 @@ namespace Clipboard_Cycler
 
             SetMenuItems();
             SetGUIandHotkeys();
+            Mouse = new MouseCommand();
 
             Actions.HandleFileOpen(Settings.SavedList.Replace("~`", Environment.NewLine));
         }
@@ -146,7 +147,10 @@ namespace Clipboard_Cycler
             Settings.WinSize = this.Size;
             Settings.WinLoc = this.Location;
             Settings.Save();
-            if (HotkeyComm != null) { HotkeyComm.Dispose(); }
+            if (HotkeyComm != null) { HotkeyComm.Dispose(); HotkeyComm = null; }
+            if (Mouse != null) { Mouse = null; }
+            if (!Actions.SwitchingForms) { Environment.Exit(0); }
+            //Dispose();
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -158,6 +162,11 @@ namespace Clipboard_Cycler
         private void Label1_TextChanged(object sender, EventArgs e)
         {
             if (((Label)sender).Text.EndsWith("\r\n")) { ((Label)sender).Text = ((Label)sender).Text.Trim(); }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            Actions.SwitchingForms = false;
         }
     }
 }

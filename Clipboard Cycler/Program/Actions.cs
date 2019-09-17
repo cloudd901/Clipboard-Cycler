@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SendInputKeyCommands;
@@ -12,6 +13,8 @@ namespace Clipboard_Cycler
     public static class Actions
     {
         private static Type myType = Type.GetType("Clipboard_Cycler.Actions");
+        public static bool SwitchingForms { get; set; } = false;
+
         public enum myActions
         {
             Copy,
@@ -43,16 +46,11 @@ namespace Clipboard_Cycler
             {
                 Settings.Mode = m;
                 Settings.Save();
-                CallRestart(f);
+                SwitchingForms = true;
+                f.Close();
+                try { f.Dispose(); } catch { }
+                Program.RunNewForm();
             }
-        }
-        public static void CallRestart(Form f)
-        {
-            f.Close();
-            while (f.Visible) { Task.Delay(500).Wait(); }
-            Task.Delay(500).Wait();
-            Application.Restart();
-            Environment.Exit(0);
         }
 
         public static void HandleFileOpen(string text = null)
@@ -137,7 +135,7 @@ namespace Clipboard_Cycler
 
                             //Optional delay in text
                             try { Task.Delay((int)(decimal.Parse(key)*1000m)).Wait(); keyDataString = ""; i = 0; continue; } catch { }
-
+                            
                             //Fixes issue in which hotkeys don't fire correctly through Sendkeys
                             if (Program.ProgramHotkeys.ContainsValue(key))
                             { onKeyAction(null, 0, keyDataString); keyDataString = ""; i = 0; continue; }

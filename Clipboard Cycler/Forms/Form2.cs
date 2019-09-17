@@ -19,7 +19,7 @@ namespace Clipboard_Cycler
     public partial class Form2 : HotkeysExtensionForm
     {
         private HotkeyCommand HotkeyComm { get; set; } = null;
-        private MouseCommand Mouse { get; set; } = new MouseCommand();
+        private MouseCommand Mouse { get; set; } = null;
 
         public Form2()
         {
@@ -41,6 +41,7 @@ namespace Clipboard_Cycler
 
             SetMenuItems();
             SetGUIandHotkeys();
+            Mouse = new MouseCommand();
 
             Actions.HandleFileOpen(Settings.SavedList.Replace("~`", Environment.NewLine));
         }
@@ -192,7 +193,10 @@ namespace Clipboard_Cycler
             Settings.Form2Fields[3] = textBox4.Text;
             Settings.Form2Fields[4] = textBox5.Text;
             Settings.Save();
-            if (HotkeyComm != null) { HotkeyComm.Dispose(); }
+            if (HotkeyComm != null) { HotkeyComm.Dispose(); HotkeyComm = null; }
+            if (Mouse != null) { Mouse = null; }
+            if (!Actions.SwitchingForms) { Environment.Exit(0); }
+            //Dispose();
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -214,6 +218,11 @@ namespace Clipboard_Cycler
             open.Filter = "Executable Files (*.exe, *.bat)|*.exe; *.bat|All files (*.*)|*.*";
             if (open.ShowDialog() == DialogResult.OK)
             { textBox1.Text = open.FileName; }
+        }
+
+        private void Form2_Shown(object sender, EventArgs e)
+        {
+            Actions.SwitchingForms = false;
         }
     }
 }
