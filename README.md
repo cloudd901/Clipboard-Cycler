@@ -3,11 +3,11 @@ Cycle through Text using Hotkeys.
 
 ![Icon](https://github.com/cloudd901/Clipboard-Cycler/blob/master/Clipboard%20Cycler/CC.ico)
 
-I created my initial Clipboard Cycler using AutoIT script.
-Thought that it was about time to update it using C#.
-Split parts of this project into DLL files that can be found in my other repositories.
-[HotkeyCommands.dll](https://github.com/cloudd901/HotkeyCommands)
-[SendInputKeyCommands.dll](https://github.com/cloudd901/SendInputKeyCommands)
+I created my initial Clipboard Cycler using AutoIT script.</br>
+Thought that it was about time to update it using C#.</br>
+Split parts of this project into DLL files that can be found in my other repositories.</br>
+[HotkeyCommands.dll](https://github.com/cloudd901/HotkeyCommands)</br>
+[SendInputKeyCommands.dll](https://github.com/cloudd901/SendInputKeyCommands)</br>
 [MouseCommands.dll](https://github.com/cloudd901/MouseCommands)
 
 </br></br>
