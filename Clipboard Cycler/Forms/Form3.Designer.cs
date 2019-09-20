@@ -80,6 +80,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.cycleAndPasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -179,6 +180,7 @@
             this.cycleOnlyToolStripMenuItem,
             this.cycleWFunctionsToolStripMenuItem,
             this.functionsOnlyToolStripMenuItem,
+            this.cycleAndPasteToolStripMenuItem,
             this.pasteOnlyToolStripMenuItem});
             this.modeToolStripMenuItem.Name = "modeToolStripMenuItem";
             this.modeToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
@@ -570,6 +572,13 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.Button5_Click);
             // 
+            // cycleAndPasteToolStripMenuItem
+            // 
+            this.cycleAndPasteToolStripMenuItem.Name = "cycleAndPasteToolStripMenuItem";
+            this.cycleAndPasteToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.cycleAndPasteToolStripMenuItem.Text = "Cycle and Paste";
+            this.cycleAndPasteToolStripMenuItem.Click += new System.EventHandler(this.ModeToolStripMenuItem_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -668,6 +677,7 @@
         private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useSendKeystrokeswDelayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableHotkeyErrorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cycleAndPasteToolStripMenuItem;
     }
 }
 

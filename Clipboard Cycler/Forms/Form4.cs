@@ -1,8 +1,7 @@
 ﻿using HotkeyCommands;
 using HotkeyCommands.HKCFormExtension;
-using MouseCommands;
 using System;
-using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 /*
 * HotkeyCommand.dll referenced in the Forms.cs using Hotkeys.
@@ -30,18 +29,15 @@ namespace Clipboard_Cycler
             Text = Program.MyTitle;
             Size = Settings.WinSize;
             Location = Settings.WinLoc;
-            textBox1.Text = Settings.Form4Fields[0];
-            textBox2.Text = Settings.Form4Fields[1];
-            textBox3.Text = Settings.Form4Fields[2];
-            textBox4.Text = Settings.Form4Fields[3];
-            textBox5.Text = Settings.Form4Fields[4];
-            textBox6.Text = Settings.Form4Fields[5];
-            textBox7.Text = Settings.Form4Fields[6];
-            textBox8.Text = Settings.Form4Fields[7];
-            textBox9.Text = Settings.Form4Fields[8];
-            textBox10.Text = Settings.Form4Fields[9];
-            textBox11.Text = Settings.Form4Fields[10];
-            textBox12.Text = Settings.Form4Fields[11];
+            textBox4.Text = Settings.Form4Fields[0];
+            textBox5.Text = Settings.Form4Fields[1];
+            textBox6.Text = Settings.Form4Fields[2];
+            textBox7.Text = Settings.Form4Fields[3];
+            textBox8.Text = Settings.Form4Fields[4];
+            textBox9.Text = Settings.Form4Fields[5];
+            textBox10.Text = Settings.Form4Fields[6];
+            textBox11.Text = Settings.Form4Fields[7];
+
 
             SetMenuItems();
             SetGUIandHotkeys();
@@ -53,43 +49,10 @@ namespace Clipboard_Cycler
             cycleOnlyToolStripMenuItem.Checked = Settings.Mode == 1 ? true : false;
             cycleWFunctionsToolStripMenuItem.Checked = Settings.Mode == 2 ? true : false;
             functionsOnlyToolStripMenuItem.Checked = Settings.Mode == 3 ? true : false;
-            pasteOnlyToolStripMenuItem.Checked = Settings.Mode == 4 ? true : false;
+            cycleAndPasteToolStripMenuItem.Checked = Settings.Mode == 4 ? true : false;
+            pasteOnlyToolStripMenuItem.Checked = Settings.Mode == 5 ? true : false;
 
-            if (Settings.Mode == 4)
-            {
-                SetHotkeys(new string[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12" });
-                if (!label12.Enabled)
-                {
-                    //F12 Hotkey failed. Try using an alternate F12 Hotkey:
-                    HotkeyComm._StopHotkeys();
-                    HotkeyComm.HotkeyUnregister("F12");
-                    HotkeyComm.HotkeyRegister("{CTRL}F12");
-                    HotkeyComm._StartHotkeys();
-                    if (!label12.Enabled)
-                    {
-                        //F12 Hotkey failed. Try using an alternate F12 Hotkey:
-                        HotkeyComm._StopHotkeys();
-                        HotkeyComm.HotkeyUnregister("{CTRL}F12");
-                        HotkeyComm.HotkeyRegister("{Shift}F12");
-                        HotkeyComm._StartHotkeys();
-                        if (!label12.Enabled)
-                        {
-                            //F12 Hotkey failed. Try using an alternate F12 Hotkey:
-                            HotkeyComm._StopHotkeys();
-                            HotkeyComm.HotkeyUnregister("{Shift}F12");
-                            HotkeyComm.HotkeyRegister("{ALT}F12");
-                            HotkeyComm._StartHotkeys();
-                            if (!label12.Enabled)
-                            {
-                                HotkeyComm._StopHotkeys();
-                                HotkeyComm.HotkeyUnregister("{ALT}F12");
-                                HotkeyComm._StartHotkeys();
-                            }
-                        }
-                    }
-                }
-                if (Program.Failed && !Settings.HideHotkeyErrors) { MessageBox.Show("One or more Hotkeys failed to register."); }
-            }
+            SetHotkeys(new string[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11" });
         }
 
         private void SetHotkeys(string[] hklist)
@@ -106,18 +69,26 @@ namespace Clipboard_Cycler
             }
             if (HotkeyComm.IsRegistered) { HotkeyComm._StopHotkeys(); }
             HotkeyComm.HotkeyRegisterList(hklist, true);
+            if (Settings.UseEscape)
+            {
+                if (!label1.Text.Contains("Esc = Double Click")) { label1.Text += "\r\nEsc = Double Click"; }
+                if (!HotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { HotkeyComm.HotkeyRegister("Escape"); }
+            }
+            else if (!Settings.UseEscape)
+            {
+                if (label1.Text.Contains("Esc = Double Click")) { label1.Text = label1.Text.Replace("Esc = Double Click", ""); }
+                if (HotkeyComm.HotkeyDictionary.Values.Contains("Escape")) { HotkeyComm.HotkeyUnregister("Escape"); }
+            }
             HotkeyComm._StartHotkeys();
+            if (Program.Failed && !Settings.HideHotkeyErrors) { MessageBox.Show("One or more Hotkeys failed to register."); }
         }
-
         private void Registrations(bool result, string key, short id)
         {
             if (result == false)
             {
-                Program.Failed = true;
-                if (key == "F1") { label1.Enabled = false; }
-                else if (key == "F2") { label2.Enabled = false; }
-                else if (key == "F3") { label3.Enabled = false; }
-                else if (key == "F4") { label4.Enabled = false; }
+                if (key == "F1" || key == "F2") { comboBox1.Enabled = false; }
+                // if (key == "F3") { label2.Enabled = false; }
+                else if (key == "F4") { label10.Enabled = false; }
                 else if (key == "F5") { label5.Enabled = false; }
                 else if (key == "F6") { label6.Enabled = false; }
                 else if (key == "F7") { label7.Enabled = false; }
@@ -125,35 +96,7 @@ namespace Clipboard_Cycler
                 else if (key == "F9") { label9.Enabled = false; }
                 else if (key == "F10") { label10.Enabled = false; }
                 else if (key == "F11") { label11.Enabled = false; }
-                else if (key == "F12")
-                {
-                    Program.Failed = false; //set to false, will try again with ctrlf12
-                    label12.Enabled = false;
-                }
-                else if (key == "{CTRL}F12") { Program.Failed = false; }//try2
-                else if (key == "{Shift}F12") { Program.Failed = false; }//try3
-                else if (key == "{ALT}F12") { }//try4
-            }
-            if (result == true && key == "{Shift}F12")
-            {
-                label12.Enabled = true;
-                label12.Text = "{Shift}F12 =";
-                textBox12.Location = new System.Drawing.Point(69, 231);
-                textBox12.Size = new System.Drawing.Size(158, 18);
-            }
-            else if (result == true && key == "{CTRL}F12")
-            {
-                label12.Enabled = true;
-                label12.Text = "{CTRL}F12 =";
-                textBox12.Location = new System.Drawing.Point(69, 231);
-                textBox12.Size = new System.Drawing.Size(158, 18);
-            }
-            else if (result == true && key == "{ALT}F12")
-            {
-                label12.Enabled = true;
-                label12.Text = "{ALT}F12 =";
-                textBox12.Location = new System.Drawing.Point(69, 231);
-                textBox12.Size = new System.Drawing.Size(158, 18);
+                Program.Failed = true;
             }
             Program.ProgramHotkeys.Add(id, key);
         }
@@ -161,7 +104,6 @@ namespace Clipboard_Cycler
         {
             Program.ProgramHotkeys.Remove(id);
         }
-
         private void OnActionComplete(Actions.myActions action, dynamic optional = null)
         {
             /*
@@ -170,33 +112,40 @@ namespace Clipboard_Cycler
              * Use Optional for additional information sent from Actions.
              */
 
-            if (action == Actions.myActions.Paste2)
+            if (action == Actions.myActions.Copy)
             {
-                string key = (string)optional;
-                if (key == "F1")
-                { Actions.PasteString(textBox1.Text); }
-                else if (key == "F2")
-                { Actions.PasteString(textBox2.Text); }
-                else if (key == "F3")
-                { Actions.PasteString(textBox3.Text); }
-                else if (key == "F4")
-                { Actions.PasteString(textBox4.Text); }
-                else if (key == "F5")
-                { Actions.PasteString(textBox5.Text); }
-                else if (key == "F6")
-                { Actions.PasteString(textBox6.Text); }
-                else if (key == "F7")
-                { Actions.PasteString(textBox7.Text); }
-                else if (key == "F8")
-                { Actions.PasteString(textBox8.Text); }
-                else if (key == "F9")
-                { Actions.PasteString(textBox9.Text); }
-                else if (key == "F10")
-                { Actions.PasteString(textBox10.Text); }
-                else if (key == "F11")
-                { Actions.PasteString(textBox11.Text); }
-                else if (key == "F12" || key == "{Shift}F12" || key == "{CTRL}F12" || key == "{ALT}F12")
-                { Actions.PasteString(textBox12.Text); }
+                CopyFromListToCombo();
+            }
+            else if (action == Actions.myActions.Paste)
+            {
+                label3.Text = "Last Paste: " + (string)optional;
+                try
+                { comboBox1.SelectedIndex++; }
+                catch { }
+                Program.MyIndex = comboBox1.SelectedIndex;
+                if (Program.EndOfListPasted) { label2.Text = "End/" + comboBox1.Items.Count; }
+            }
+            else if (action == Actions.myActions.Paste2)
+            {
+                string pasteText = "";
+                if ((string)optional == "F4")
+                { pasteText = textBox4.Text; }
+                else if ((string)optional == "F5")
+                { pasteText = textBox5.Text; }
+                else if ((string)optional == "F6")
+                { pasteText = textBox6.Text; }
+                else if ((string)optional == "F7")
+                { pasteText = textBox7.Text; }
+                else if ((string)optional == "F8")
+                { pasteText = textBox8.Text; }
+                else if ((string)optional == "F9")
+                { pasteText = textBox9.Text; }
+                else if ((string)optional == "F10")
+                { pasteText = textBox10.Text; }
+                else if ((string)optional == "F11")
+                { pasteText = textBox11.Text; }
+
+                Actions.PasteString(pasteText);
             }
             else if (action == Actions.myActions.Esc)
             {
@@ -205,39 +154,61 @@ namespace Clipboard_Cycler
 
         }//Fires from Actions after an action has been completed.
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void CopyFromListToCombo()
         {
+            comboBox1.Items.Clear();
+            foreach (string s in Program.MyList)
+            { comboBox1.Items.Add(Settings.TrimWS ? s.Trim() : s); }
+            CopyFromReset();
+        }
+        private void CopyFromComboToList()
+        {
+            Program.MyList.Clear();
+            foreach (string s in comboBox1.Items)
+            { Program.MyList.Add(Settings.TrimWS ? s.Trim() : s); }
+            CopyFromReset();
+        }
+        private void CopyFromReset()
+        {
+            Program.MyIndex = 0;
+            try { comboBox1.SelectedIndex = 0; } catch { }
+            label2.Text = comboBox1.Items.Count > 0 ? "1/" + comboBox1.Items.Count : label2.Text = "0/0";
+        }
+
+        private void Form4_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.SavedList = String.Join("~`", comboBox1.Items.Cast<string>());
             Settings.WinSize = this.Size;
             Settings.WinLoc = this.Location;
-            Settings.Form4Fields[0] = textBox1.Text;
-            Settings.Form4Fields[1] = textBox2.Text;
-            Settings.Form4Fields[2] = textBox3.Text;
-            Settings.Form4Fields[3] = textBox4.Text;
-            Settings.Form4Fields[4] = textBox5.Text;
-            Settings.Form4Fields[5] = textBox6.Text;
-            Settings.Form4Fields[6] = textBox7.Text;
-            Settings.Form4Fields[7] = textBox8.Text;
-            Settings.Form4Fields[8] = textBox9.Text;
-            Settings.Form4Fields[9] = textBox10.Text;
-            Settings.Form4Fields[10] = textBox11.Text;
-            Settings.Form4Fields[11] = textBox12.Text;
+            Settings.Form4Fields[0] = textBox4.Text;
+            Settings.Form4Fields[1] = textBox5.Text;
+            Settings.Form4Fields[2] = textBox6.Text;
+            Settings.Form4Fields[3] = textBox7.Text;
+            Settings.Form4Fields[4] = textBox8.Text;
+            Settings.Form4Fields[5] = textBox9.Text;
+            Settings.Form4Fields[6] = textBox10.Text;
+            Settings.Form4Fields[7] = textBox11.Text;
             Settings.Save();
             if (HotkeyComm != null) { HotkeyComm.Dispose(); HotkeyComm = null; }
             if (!Actions.SwitchingForms) { Environment.Exit(0); }
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OpenFileDialog open = new OpenFileDialog();
-            open.InitialDirectory = Directory.GetCurrentDirectory();
-            open.Filter = "Executable Files (*.exe, *.bat)|*.exe; *.bat|All files (*.*)|*.*";
-            if (open.ShowDialog() == DialogResult.OK)
-            { textBox1.Text = open.FileName; }
+            Program.EndOfListPasted = false;
+            Program.MyIndex = comboBox1.SelectedIndex;
+            label2.Text = comboBox1.SelectedIndex + 1 + "/" + comboBox1.Items.Count;
+        }
+
+        private void Label1_TextChanged(object sender, EventArgs e)
+        {
+            if (((Label)sender).Text.EndsWith("\r\n")) { ((Label)sender).Text = ((Label)sender).Text.Trim(); }
         }
 
         private void Form4_Shown(object sender, EventArgs e)
         {
             Actions.SwitchingForms = false;
         }
+
     }
 }

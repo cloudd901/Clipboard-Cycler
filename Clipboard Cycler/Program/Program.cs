@@ -51,5 +51,7 @@ namespace Clipboard_Cycler
         { formThread = new Thread(() => Application.Run(new Form3())); }
         public static void RunForm4()
         { formThread = new Thread(() => Application.Run(new Form4())); }
+        public static void RunForm5()
+        { formThread = new Thread(() => Application.Run(new Form5())); }
     }
 }

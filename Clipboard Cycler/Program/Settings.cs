@@ -32,7 +32,8 @@ namespace Clipboard_Cycler
 
         public static string[] Form2Fields { get; } = new string[5] { "", "", "", "", "" };
         public static string[] Form3Fields { get; } = new string[5] { "", "", "", "", "" };
-        public static string[] Form4Fields { get; } = new string[12] { "", "", "", "", "", "", "", "", "", "", "", "" };
+        public static string[] Form4Fields { get; } = new string[8] { "", "", "", "", "", "", "", "" };
+        public static string[] Form5Fields { get; } = new string[12] { "", "", "", "", "", "", "", "", "", "", "", "" };
 
         public static void Initialize()
         {
@@ -49,12 +50,15 @@ namespace Clipboard_Cycler
             bool.TryParse(ini.Read("SortList"), out sortList);
             bool.TryParse(ini.Read("TrimWS"), out trimWS);
             SavedList = ini.Read("SavedList").Replace("~`", Environment.NewLine);
+
             string[] f2temp = ini.Read("Form2Fields").Split('`');
             if (f2temp.Length == 5) { for (int i = 0; i < 5; i++) { Form2Fields[i] = f2temp[i]; } }
             string[] f3temp = ini.Read("Form3Fields").Split('`');
             if (f3temp.Length == 5) { for (int i = 0; i < 5; i++) { Form3Fields[i] = f3temp[i]; } }
             string[] f4temp = ini.Read("Form4Fields").Split('`');
-            if (f4temp.Length == 12) { for (int i = 0; i < 12; i++) { Form4Fields[i] = f4temp[i]; } }
+            if (f4temp.Length == 8) { for (int i = 0; i < 8; i++) { Form4Fields[i] = f4temp[i]; } }
+            string[] f5temp = ini.Read("Form5Fields").Split('`');
+            if (f5temp.Length == 12) { for (int i = 0; i < 12; i++) { Form5Fields[i] = f5temp[i]; } }
 
             short.TryParse(ini.Read("Mode"), out mode);
             if (mode < 1 || mode > 4) { mode = 1; }
@@ -132,6 +136,7 @@ namespace Clipboard_Cycler
             ini.Write("Form2Fields", string.Join("`", Form2Fields));
             ini.Write("Form3Fields", string.Join("`", Form3Fields));
             ini.Write("Form4Fields", string.Join("`", Form4Fields));
+            ini.Write("Form5Fields", string.Join("`", Form5Fields));
         }
     }
 }

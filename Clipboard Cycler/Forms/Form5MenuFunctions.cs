@@ -5,18 +5,14 @@ using System.Windows.Forms;
 
 namespace Clipboard_Cycler
 {
-    partial class Form4
+    partial class Form5
     {
 
         private void SetMenuItems()
         {
-            useEscToDblClickToolStripMenuItem.Checked = Settings.UseEscape;
             useClipboardPasteToolStripMenuItem.Checked = Settings.UseSendCTRLV;
             useSendKeysToolStripMenuItem.Checked = Settings.UseSendKeys;
             useSendKeystrokeswDelayToolStripMenuItem.Checked = Settings.UseSendKeysDelay;
-            createUniqueListToolStripMenuItem.Checked = Settings.UniqueList;
-            sortListToolStripMenuItem.Checked = Settings.SortList;
-            trimWhitespaceToolStripMenuItem.Checked = Settings.TrimWS;
             disableHotkeyErrorsToolStripMenuItem.Checked = Settings.HideHotkeyErrors;
         }
 
@@ -68,54 +64,6 @@ namespace Clipboard_Cycler
             useSendKeystrokeswDelayToolStripMenuItem.Checked = Settings.UseSendKeysDelay;
         }
 
-        private void CreateUniqueListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (createUniqueListToolStripMenuItem.Checked)
-            { createUniqueListToolStripMenuItem.Checked = false; }
-            else
-            { createUniqueListToolStripMenuItem.Checked = true; }
-
-            if (createUniqueListToolStripMenuItem.Checked)
-            { Settings.UniqueList = true; }
-            else
-            { Settings.UniqueList = false; }
-
-            if (Settings.UniqueList)
-            {
-                Program.MyList = Program.MyList.Distinct().ToList();
-                CopyFromListToCombo();
-            }
-        }
-        private void SortListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (sortListToolStripMenuItem.Checked)
-            { sortListToolStripMenuItem.Checked = false; }
-            else
-            { sortListToolStripMenuItem.Checked = true; }
-
-            if (sortListToolStripMenuItem.Checked)
-            { Settings.SortList = true; }
-            else
-            { Settings.SortList = false; }
-
-            if (Settings.SortList && comboBox1.Items.Count > 0)
-            { comboBox1.Sorted = true; }
-            else
-            { comboBox1.Sorted = false; }
-            CopyFromComboToList();
-        }
-        private void TrimWhitespaceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (trimWhitespaceToolStripMenuItem.Checked)
-            { trimWhitespaceToolStripMenuItem.Checked = false; }
-            else
-            { trimWhitespaceToolStripMenuItem.Checked = true; }
-
-            if (trimWhitespaceToolStripMenuItem.Checked) { Settings.TrimWS = true; }
-            else { Settings.TrimWS = false; }
-            CopyFromListToCombo();
-            CopyFromComboToList();
-        }
         private void UseEscToDblClickToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (useEscToDblClickToolStripMenuItem.Checked)
@@ -167,18 +115,9 @@ namespace Clipboard_Cycler
         //=====================================================================================
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Text = Program.MyTitle;
-            Program.MySaveFile = null;
-            Program.MyList.Clear();
-            Program.MyIndex = 0;
-            comboBox1.Items.Clear();
-            try { comboBox1.SelectedIndex = 0; } catch { }
-            comboBox1.Text = "";
-            label2.Text = "0/0";
-            label3.Text = "Last Paste:";
-        }
-        private void ClearAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+            textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
             textBox4.Text = "";
             textBox5.Text = "";
             textBox6.Text = "";
@@ -187,6 +126,7 @@ namespace Clipboard_Cycler
             textBox9.Text = "";
             textBox10.Text = "";
             textBox11.Text = "";
+            textBox12.Text = "";
         }
         private void OpenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -214,17 +154,6 @@ namespace Clipboard_Cycler
         }
         private void RemoveItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int temp = Program.MyIndex;
-                Program.MyList.RemoveAt(Program.MyIndex);
-                CopyFromListToCombo();
-                temp = temp < 1 ? 0 : temp >= comboBox1.Items.Count ? temp - 1 : temp;
-                comboBox1.SelectedIndex = temp;
-                Program.MyIndex = comboBox1.SelectedIndex;
-
-            }
-            catch { }
         }
         private void SaveToolStripMenuItem1_Click(object sender, EventArgs e)
         {

@@ -63,6 +63,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.cycleAndPasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -154,6 +155,7 @@
             this.cycleOnlyToolStripMenuItem,
             this.cycleWFunctionsToolStripMenuItem,
             this.functionsOnlyToolStripMenuItem,
+            this.cycleAndPasteToolStripMenuItem,
             this.pasteOnlyToolStripMenuItem});
             this.modeToolStripMenuItem.Name = "modeToolStripMenuItem";
             this.modeToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
@@ -359,6 +361,13 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Last Paste:";
             // 
+            // cycleAndPasteToolStripMenuItem
+            // 
+            this.cycleAndPasteToolStripMenuItem.Name = "cycleAndPasteToolStripMenuItem";
+            this.cycleAndPasteToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.cycleAndPasteToolStripMenuItem.Text = "Cycle and Paste";
+            this.cycleAndPasteToolStripMenuItem.Click += new System.EventHandler(this.ModeToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -424,6 +433,7 @@
         public System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useSendKeystrokeswDelayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableHotkeyErrorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cycleAndPasteToolStripMenuItem;
     }
 }
 

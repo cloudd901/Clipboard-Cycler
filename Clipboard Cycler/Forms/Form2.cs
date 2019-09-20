@@ -48,12 +48,10 @@ namespace Clipboard_Cycler
             cycleOnlyToolStripMenuItem.Checked = Settings.Mode == 1 ? true : false;
             cycleWFunctionsToolStripMenuItem.Checked = Settings.Mode == 2 ? true : false;
             functionsOnlyToolStripMenuItem.Checked = Settings.Mode == 3 ? true : false;
-            pasteOnlyToolStripMenuItem.Checked = Settings.Mode == 4 ? true : false;
+            cycleAndPasteToolStripMenuItem.Checked = Settings.Mode == 4 ? true : false;
+            pasteOnlyToolStripMenuItem.Checked = Settings.Mode == 5 ? true : false;
 
-            if (Settings.Mode == 2)
-            {
-                SetHotkeys(new string[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8" });
-            }
+            SetHotkeys(new string[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8" });
         }
 
         private void SetHotkeys(string[] hklist)
@@ -220,5 +218,6 @@ namespace Clipboard_Cycler
         {
             Actions.SwitchingForms = false;
         }
+
     }
 }

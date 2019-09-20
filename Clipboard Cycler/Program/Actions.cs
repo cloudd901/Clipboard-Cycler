@@ -27,7 +27,6 @@ namespace Clipboard_Cycler
         public static event ActionCompleteEventHandler ActionComplete;
         public delegate void ActionCompleteEventHandler(myActions action, dynamic optional = null);
         
-
         public static void onKeyAction(Form form, short id, string key)
         {
             try
@@ -72,9 +71,7 @@ namespace Clipboard_Cycler
                 if (string.IsNullOrWhiteSpace(text))
                 {
                     Clipboard.Clear();
-                    Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
-                    Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
-                    Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
+                    SendCTRLV();
                     data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 }
                 else
@@ -111,9 +108,7 @@ namespace Clipboard_Cycler
                 string keyDataString = "";
                 if (Settings.UseSendCTRLV)
                 {
-                    Program.SendKeyComm.SendKeyDown("CTRL");
-                    Program.SendKeyComm.SendKeyPress("v");
-                    Program.SendKeyComm.SendKeyUp("CTRL");
+                    SendCTRLV();
                     Task.Delay(100).Wait();
                 }
                 else
@@ -187,11 +182,9 @@ namespace Clipboard_Cycler
                 List<string> data;
                 string temp = Clipboard.GetText();
                 Clipboard.Clear();
-                System.Threading.Tasks.Task.Delay(50).Wait();
-                Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
-                Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
-                Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
-                System.Threading.Tasks.Task.Delay(100).Wait();
+                Task.Delay(50).Wait();
+                SendCTRLV();
+                Task.Delay(100).Wait();
                 data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 data.RemoveAll(x => x == "");
                 if (data.Count > 0)
@@ -235,6 +228,12 @@ namespace Clipboard_Cycler
                 ActionComplete?.Invoke(myActions.Paste, selectedText);
             }
         }
+        private static void SendCTRLV()
+        {
+            Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
+            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
+            Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
+        }
         private static void EnterPressed()
         {
             Program.SendKeyComm.SendKeyPress("{Enter}");
@@ -242,29 +241,29 @@ namespace Clipboard_Cycler
         }
         private static void HandleHotkeyF1()
         {
-            if (Settings.Mode == 1 || Settings.Mode == 2 || Settings.Mode == 3)
+            if (Settings.Mode == 1 || Settings.Mode == 2 || Settings.Mode == 3 || Settings.Mode == 4)
             {
                 CopyPressed();
             }
-            else if (Settings.Mode == 4)
+            else if (Settings.Mode == 5)
             { ActionComplete?.Invoke(myActions.Paste2, "F1"); }
         }
         private static void HandleHotkeyF2()
         {
-            if (Settings.Mode == 1 || Settings.Mode == 2 || Settings.Mode == 3)
+            if (Settings.Mode == 1 || Settings.Mode == 2 || Settings.Mode == 3 || Settings.Mode == 4)
             {
                 PastePressed();
             }
-            else if (Settings.Mode == 4)
+            else if (Settings.Mode == 5)
             { ActionComplete?.Invoke(myActions.Paste2, "F2"); }
         }
         private static void HandleHotkeyF3()
         {
-            if (Settings.Mode == 1 || Settings.Mode == 2 || Settings.Mode == 3)
+            if (Settings.Mode == 1 || Settings.Mode == 2 || Settings.Mode == 3 || Settings.Mode == 4)
             {
                 EnterPressed();
             }
-            else if (Settings.Mode == 4)
+            else if (Settings.Mode == 5)
             { ActionComplete?.Invoke(myActions.Paste2, "F3"); }
         }
 
@@ -275,70 +274,70 @@ namespace Clipboard_Cycler
         {
             if (Settings.Mode == 2 || Settings.Mode == 3)
             { ActionComplete?.Invoke(myActions.Run, "F4"); }
-            else if (Settings.Mode == 4)
+            else if (Settings.Mode == 5 || Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F4"); }
         }
         private static void HandleHotkeyF5()
         {
-            if (Settings.Mode == 2 || Settings.Mode == 4)
+            if (Settings.Mode == 2 || Settings.Mode == 5 || Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F5"); }
             else if (Settings.Mode == 3)
             { ActionComplete?.Invoke(myActions.Run, "F5"); }
         }
         private static void HandleHotkeyF6()
         {
-            if (Settings.Mode == 2 || Settings.Mode == 4)
+            if (Settings.Mode == 2 || Settings.Mode == 5 || Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F6"); }
             else if (Settings.Mode == 3)
             { ActionComplete?.Invoke(myActions.Run, "F6"); }
         }
         private static void HandleHotkeyF7()
         {
-            if (Settings.Mode == 2 || Settings.Mode == 4)
+            if (Settings.Mode == 2 || Settings.Mode == 5 || Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F7"); }
             else if (Settings.Mode == 3)
             { ActionComplete?.Invoke(myActions.Run, "F7"); }
         }
         private static void HandleHotkeyF8()
         {
-            if (Settings.Mode == 2 || Settings.Mode == 4)
+            if (Settings.Mode == 2 || Settings.Mode == 5 || Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F8"); }
             else if (Settings.Mode == 3)
             { ActionComplete?.Invoke(myActions.Run, "F8"); }
         }
         private static void HandleHotkeyF9()
         {
-            if (Settings.Mode == 4)
+            if (Settings.Mode == 5 || Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F9"); }
         }
         private static void HandleHotkeyF10()
         {
-            if (Settings.Mode == 4)
+            if (Settings.Mode == 5 || Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F10"); }
         }
         private static void HandleHotkeyF11()
         {
-            if (Settings.Mode == 4)
+            if (Settings.Mode == 5 || Settings.Mode == 4)
             { ActionComplete?.Invoke(myActions.Paste2, "F11"); }
         }
         private static void HandleHotkeyF12()
         {
-            if (Settings.Mode == 4)
+            if (Settings.Mode == 5)
             { ActionComplete?.Invoke(myActions.Paste2, "F12"); }
         }
         private static void HandleHotkeyShiftF12()
         {
-            if (Settings.Mode == 4)
+            if (Settings.Mode == 5)
             { ActionComplete?.Invoke(myActions.Paste2, "{Shift}F12"); }
         }
         private static void HandleHotkeyCTRLF12()
         {
-            if (Settings.Mode == 4)
+            if (Settings.Mode == 5)
             { ActionComplete?.Invoke(myActions.Paste2, "{CTRL}F12"); }
         }
         private static void HandleHotkeyALTF12()
         {
-            if (Settings.Mode == 4)
+            if (Settings.Mode == 5)
             { ActionComplete?.Invoke(myActions.Paste2, "{ALT}F12"); }
         }
 
