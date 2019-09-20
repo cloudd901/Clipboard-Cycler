@@ -5,6 +5,10 @@ Cycle through Text using Hotkeys.
 
 I created my initial Clipboard Cycler using AutoIT script.
 Thought that it was about time to update it using C#.
+Split parts of this project into DLL files that can be found in my other repositories.
+[HotkeyCommands.dll](https://github.com/cloudd901/HotkeyCommands)
+[SendInputKeyCommands.dll](https://github.com/cloudd901/SendInputKeyCommands)
+[MouseCommands.dll](https://github.com/cloudd901/MouseCommands)
 
 </br></br>
 <b>Cycle Keys</b>
