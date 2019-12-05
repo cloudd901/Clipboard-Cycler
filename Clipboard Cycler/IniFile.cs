@@ -25,8 +25,8 @@ namespace Clipboard_Cycler
 
         public string Read(string Key, string Section = null)
         {
-            var RetVal = new StringBuilder(255);
-            NativeMethods.GetPrivateProfileString(Section ?? EXE, Key, "", RetVal, 255, Path);
+            var RetVal = new StringBuilder(65536);
+            NativeMethods.GetPrivateProfileString(Section ?? EXE, Key, "", RetVal, 65536, Path);
             return RetVal.ToString();
         }
 

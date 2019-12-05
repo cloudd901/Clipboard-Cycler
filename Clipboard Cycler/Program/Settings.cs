@@ -49,7 +49,8 @@ namespace Clipboard_Cycler
             bool.TryParse(ini.Read("UniqueList"), out uniqueList);
             bool.TryParse(ini.Read("SortList"), out sortList);
             bool.TryParse(ini.Read("TrimWS"), out trimWS);
-            SavedList = ini.Read("SavedList").Replace("~`", Environment.NewLine);
+            string SavedString = ini.Read("SavedList");
+            SavedList = SavedString.Replace("~`", Environment.NewLine);
 
             string[] f2temp = ini.Read("Form2Fields").Split('`');
             if (f2temp.Length == 5) { for (int i = 0; i < 5; i++) { Form2Fields[i] = f2temp[i]; } }
