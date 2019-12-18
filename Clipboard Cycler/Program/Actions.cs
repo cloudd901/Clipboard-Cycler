@@ -231,7 +231,7 @@ namespace Clipboard_Cycler
         private static void SendCTRLV()
         {
             Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
-            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
+            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_V);
             Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
         }
         private static void EnterPressed()
