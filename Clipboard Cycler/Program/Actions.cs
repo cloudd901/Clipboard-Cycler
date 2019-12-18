@@ -71,7 +71,7 @@ namespace Clipboard_Cycler
                 if (string.IsNullOrWhiteSpace(text))
                 {
                     Clipboard.Clear();
-                    SendCTRLV();
+                    SendCTRLC();
                     data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 }
                 else
@@ -183,7 +183,7 @@ namespace Clipboard_Cycler
                 string temp = Clipboard.GetText();
                 Clipboard.Clear();
                 Task.Delay(50).Wait();
-                SendCTRLV();
+                SendCTRLC();
                 Task.Delay(100).Wait();
                 data = new List<string>(Clipboard.GetText().Split(new[] { "\r\n", "\r", "\n", "\t" }, StringSplitOptions.None));
                 data.RemoveAll(x => x == "");
@@ -232,6 +232,12 @@ namespace Clipboard_Cycler
         {
             Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
             Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_V);
+            Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
+        }
+        private static void SendCTRLC()
+        {
+            Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
+            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
             Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
         }
         private static void EnterPressed()
