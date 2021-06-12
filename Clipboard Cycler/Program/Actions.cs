@@ -93,15 +93,15 @@ namespace Clipboard_Cycler
         {
             try
             {
-                if (key.Equals("{esc}", StringComparison.CurrentCultureIgnoreCase) || key.Equals("{escape}", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    key = "{Escape}";
-                }
-
                 if (key.Contains("}"))
                 {
                     key = key.Replace("{", "")
                         .Replace("}", "");
+                }
+
+                if (key.Equals("esc", StringComparison.CurrentCultureIgnoreCase) || key.Equals("escape", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    key = "Escape";
                 }
 
                 myType.GetMethod("HandleHotkey" + key, BindingFlags.Static | BindingFlags.NonPublic).Invoke(form, null);
@@ -149,14 +149,20 @@ namespace Clipboard_Cycler
 
                         if (keyDataString[0] == '{')
                         {
-                            string key = keyDataString.ToString().Replace("{", "").Replace("}", "");
-                            if (key.Equals("{esc}", StringComparison.CurrentCultureIgnoreCase) || key.Equals("{escape}", StringComparison.CurrentCultureIgnoreCase))
+                            string key = keyDataString.ToString();
+                            if (key.Contains("}"))
+                            {
+                                key = key.Replace("{", "")
+                                    .Replace("}", "");
+                            }
+
+                            if (key.Equals("esc", StringComparison.CurrentCultureIgnoreCase) || key.Equals("escape", StringComparison.CurrentCultureIgnoreCase))
                             {
                                 key = "Escape";
                                 keyDataString.Clear();
                                 keyDataString.Append("{Escape}");
                             }
-                            else if (key.Equals("{tab}", StringComparison.CurrentCultureIgnoreCase))
+                            else if (key.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
                             {
                                 key = "Tab";
                                 keyDataString.Clear();
