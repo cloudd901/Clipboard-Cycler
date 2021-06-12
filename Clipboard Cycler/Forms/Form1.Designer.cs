@@ -42,6 +42,7 @@
             this.cycleOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cycleWFunctionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.functionsOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cycleAndPasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useEscToDblClickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +64,6 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.cycleAndPasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -102,7 +102,7 @@
             this.newToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripMenuItem.Image")));
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(143, 26);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.newToolStripMenuItem.Text = "&New/Clear";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
@@ -111,21 +111,21 @@
             this.openToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem1.Image")));
             this.openToolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
-            this.openToolStripMenuItem1.Size = new System.Drawing.Size(143, 26);
+            this.openToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
             this.openToolStripMenuItem1.Text = "&Open";
             this.openToolStripMenuItem1.Click += new System.EventHandler(this.OpenToolStripMenuItem1_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(140, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(181, 6);
             // 
             // saveToolStripMenuItem1
             // 
             this.saveToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem1.Image")));
             this.saveToolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolStripMenuItem1.Name = "saveToolStripMenuItem1";
-            this.saveToolStripMenuItem1.Size = new System.Drawing.Size(143, 26);
+            this.saveToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
             this.saveToolStripMenuItem1.Text = "&Save";
             this.saveToolStripMenuItem1.Click += new System.EventHandler(this.SaveToolStripMenuItem1_Click);
             // 
@@ -133,19 +133,19 @@
             // 
             this.toolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(143, 26);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItem1.Text = "S&ave As";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.SaveAsToolStripMenuItem1_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(140, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(181, 6);
             // 
             // removeItemToolStripMenuItem
             // 
             this.removeItemToolStripMenuItem.Name = "removeItemToolStripMenuItem";
-            this.removeItemToolStripMenuItem.Size = new System.Drawing.Size(143, 26);
+            this.removeItemToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.removeItemToolStripMenuItem.Text = "&Remove Item";
             this.removeItemToolStripMenuItem.Click += new System.EventHandler(this.RemoveItemToolStripMenuItem_Click);
             // 
@@ -181,6 +181,13 @@
             this.functionsOnlyToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.functionsOnlyToolStripMenuItem.Text = "Cycle and Run";
             this.functionsOnlyToolStripMenuItem.Click += new System.EventHandler(this.ModeToolStripMenuItem_Click);
+            // 
+            // cycleAndPasteToolStripMenuItem
+            // 
+            this.cycleAndPasteToolStripMenuItem.Name = "cycleAndPasteToolStripMenuItem";
+            this.cycleAndPasteToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.cycleAndPasteToolStripMenuItem.Text = "Cycle and Paste";
+            this.cycleAndPasteToolStripMenuItem.Click += new System.EventHandler(this.ModeToolStripMenuItem_Click);
             // 
             // pasteOnlyToolStripMenuItem
             // 
@@ -360,13 +367,6 @@
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Last Paste:";
-            // 
-            // cycleAndPasteToolStripMenuItem
-            // 
-            this.cycleAndPasteToolStripMenuItem.Name = "cycleAndPasteToolStripMenuItem";
-            this.cycleAndPasteToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.cycleAndPasteToolStripMenuItem.Text = "Cycle and Paste";
-            this.cycleAndPasteToolStripMenuItem.Click += new System.EventHandler(this.ModeToolStripMenuItem_Click);
             // 
             // Form1
             // 

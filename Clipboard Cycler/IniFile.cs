@@ -8,32 +8,21 @@ namespace Clipboard_Cycler
     internal static class NativeMethods
     {
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        internal static extern int WritePrivateProfileString(string Section, string Key, string Value, string FilePath);
+        internal static extern int GetPrivateProfileString(string Section, string Key, string Default, StringBuilder RetVal, int Size, string FilePath);
 
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        internal static extern int GetPrivateProfileString(string Section, string Key, string Default, StringBuilder RetVal, int Size, string FilePath);
+        internal static extern int WritePrivateProfileString(string Section, string Key, string Value, string FilePath);
     }
-    class IniFile
-    {
-        public string Path { get; set; }
-        public string EXE { get; set; } = Assembly.GetExecutingAssembly().GetName().Name;
 
+    internal class IniFile
+    {
         public IniFile(string IniPath = null)
         {
             Path = new FileInfo(IniPath ?? EXE + ".ini").FullName.ToString();
         }
 
-        public string Read(string Key, string Section = null)
-        {
-            var RetVal = new StringBuilder(65536);
-            NativeMethods.GetPrivateProfileString(Section ?? EXE, Key, "", RetVal, 65536, Path);
-            return RetVal.ToString();
-        }
-
-        public void Write(string Key, string Value, string Section = null)
-        {
-            NativeMethods.WritePrivateProfileString(Section ?? EXE, Key, Value, Path);
-        }
+        public string EXE { get; set; } = Assembly.GetExecutingAssembly().GetName().Name;
+        public string Path { get; set; }
 
         public void DeleteKey(string Key, string Section = null)
         {
@@ -48,6 +37,18 @@ namespace Clipboard_Cycler
         public bool KeyExists(string Key, string Section = null)
         {
             return Read(Key, Section).Length > 0;
+        }
+
+        public string Read(string Key, string Section = null)
+        {
+            var RetVal = new StringBuilder(65536);
+            NativeMethods.GetPrivateProfileString(Section ?? EXE, Key, "", RetVal, 65536, Path);
+            return RetVal.ToString();
+        }
+
+        public void Write(string Key, string Value, string Section = null)
+        {
+            NativeMethods.WritePrivateProfileString(Section ?? EXE, Key, Value, Path);
         }
     }
 }
