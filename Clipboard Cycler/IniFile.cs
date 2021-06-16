@@ -18,7 +18,7 @@ namespace Clipboard_Cycler
     {
         public IniFile(string IniPath = null)
         {
-            Path = new FileInfo(IniPath ?? EXE + ".ini").FullName.ToString();
+            Path = new FileInfo(IniPath ?? EXE + ".ini").FullName;
         }
 
         public string EXE { get; set; } = Assembly.GetExecutingAssembly().GetName().Name;

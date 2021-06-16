@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static SendInputKeyCommands.SendInputKeyCommand;
@@ -12,7 +13,8 @@ namespace Clipboard_Cycler
 {
     public static class Actions
     {
-        private static Type MyType = Type.GetType("Clipboard_Cycler.Actions");
+        private static readonly Type MyType = Type.GetType("Clipboard_Cycler.Actions");
+        private static bool Clicking;
 
         public delegate void ActionCompleteEventHandler(MyActions action, dynamic optional = null);
 
@@ -29,6 +31,19 @@ namespace Clipboard_Cycler
         }
 
         public static bool SwitchingForms { get; set; }
+
+        public static void DblClick()
+        {
+            if (!Clicking)
+            {
+                // Check prevents issue with rapid clicking.
+                Clicking = true;
+                Program.Mouse._DoubleClick();
+                Thread.Sleep(100);
+            }
+
+            Clicking = false;
+        }
 
         public static void HandleFileOpen(string text = null)
         {
@@ -91,6 +106,11 @@ namespace Clipboard_Cycler
 
         public static void OnKeyAction(Form form, short id, string key)
         {
+            if (key == null)
+            {
+                return;
+            }
+
             try
             {
                 if (key.Contains("}"))
@@ -271,21 +291,12 @@ namespace Clipboard_Cycler
                 Settings.Save();
                 SwitchingForms = true;
                 f?.Close();
-                try
-                {
-                    f?.Dispose();
-                }
-                catch
-                {
-                }
+                f?.Dispose();
 
                 Program.RunNewForm();
             }
         }
 
-        //==========================================================
-        //====================Main Hotkeys F1-F3====================
-        //==========================================================
         private static void CopyPressed()
         {
             int newDataCount = 0;
@@ -338,6 +349,50 @@ namespace Clipboard_Cycler
             ActionComplete?.Invoke(MyActions.Enter);
         }
 
+        private static void PastePressed()
+        {
+            if (Program.MyIndex != Program.MyList.Count - 1 || !Program.EndOfListPasted)
+            {
+                Program.EndOfListPasted = Program.MyIndex == Program.MyList.Count - 1;
+
+                List<string> myList = Program.MyList;
+                string selectedText = "";
+                try
+                {
+                    selectedText = myList[Program.MyIndex];
+                    PasteString(selectedText);
+                    Program.MyIndex++;
+                    if (Program.MyIndex > myList.Count)
+                    {
+                        Program.MyIndex = myList.Count;
+                    }
+                }
+                catch
+                {
+                }
+
+                ActionComplete?.Invoke(MyActions.Paste, selectedText);
+            }
+        }
+
+        private static void SendCTRLC()
+        {
+            Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
+            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
+            Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
+        }
+
+        private static void SendCTRLV()
+        {
+            Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
+            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_V);
+            Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
+        }
+
+        #region Methods for Reflection
+
+#pragma warning disable IDE0051 // Remove unused private members
+
         private static void HandleHotkeyALTF12()
         {
             if (Settings.Mode == 5)
@@ -354,9 +409,6 @@ namespace Clipboard_Cycler
             }
         }
 
-        //==========================================================
-        //=======================Other Hotkeys======================
-        //==========================================================
         private static void HandleHotkeyEscape()
         {
             ActionComplete?.Invoke(MyActions.Esc);
@@ -422,9 +474,6 @@ namespace Clipboard_Cycler
             }
         }
 
-        //==========================================================
-        //====================Alt Hotkeys F4-F12====================
-        //==========================================================
         private static void HandleHotkeyF4()
         {
             if (Settings.Mode == 2 || Settings.Mode == 3)
@@ -501,44 +550,8 @@ namespace Clipboard_Cycler
             }
         }
 
-        private static void PastePressed()
-        {
-            if (Program.MyIndex != Program.MyList.Count - 1 || !Program.EndOfListPasted)
-            {
-                Program.EndOfListPasted = Program.MyIndex == Program.MyList.Count - 1;
+#pragma warning restore IDE0051 // Remove unused private members
 
-                List<string> myList = Program.MyList;
-                string selectedText = "";
-                try
-                {
-                    selectedText = myList[Program.MyIndex];
-                    PasteString(selectedText);
-                    Program.MyIndex++;
-                    if (Program.MyIndex > myList.Count)
-                    {
-                        Program.MyIndex = myList.Count;
-                    }
-                }
-                catch
-                {
-                }
-
-                ActionComplete?.Invoke(MyActions.Paste, selectedText);
-            }
-        }
-
-        private static void SendCTRLC()
-        {
-            Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
-            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_C);
-            Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
-        }
-
-        private static void SendCTRLV()
-        {
-            Program.SendKeyComm.SendKeyDown(VirtualKeyCode.CONTROL);
-            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.KEY_V);
-            Program.SendKeyComm.SendKeyUp(VirtualKeyCode.CONTROL);
-        }
+        #endregion Methods for Reflection
     }
 }

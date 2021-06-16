@@ -81,6 +81,7 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -347,7 +348,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(-1, 70);
+            this.label1.Location = new System.Drawing.Point(-1, 73);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(240, 26);
@@ -398,7 +399,7 @@
             this.textBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox11.Location = new System.Drawing.Point(42, 235);
+            this.textBox11.Location = new System.Drawing.Point(42, 238);
             this.textBox11.Margin = new System.Windows.Forms.Padding(2);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(186, 18);
@@ -409,7 +410,7 @@
             this.textBox10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox10.Location = new System.Drawing.Point(42, 217);
+            this.textBox10.Location = new System.Drawing.Point(42, 220);
             this.textBox10.Margin = new System.Windows.Forms.Padding(2);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(186, 18);
@@ -419,7 +420,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label11.Location = new System.Drawing.Point(4, 237);
+            this.label11.Location = new System.Drawing.Point(4, 240);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(34, 13);
@@ -430,7 +431,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label10.Location = new System.Drawing.Point(4, 219);
+            this.label10.Location = new System.Drawing.Point(4, 222);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(34, 13);
@@ -441,7 +442,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label9.Location = new System.Drawing.Point(4, 201);
+            this.label9.Location = new System.Drawing.Point(4, 204);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(28, 13);
@@ -453,7 +454,7 @@
             this.textBox9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox9.Location = new System.Drawing.Point(42, 199);
+            this.textBox9.Location = new System.Drawing.Point(42, 202);
             this.textBox9.Margin = new System.Windows.Forms.Padding(2);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(186, 18);
@@ -463,7 +464,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label8.Location = new System.Drawing.Point(4, 179);
+            this.label8.Location = new System.Drawing.Point(4, 182);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(28, 13);
@@ -475,7 +476,7 @@
             this.textBox8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox8.Location = new System.Drawing.Point(32, 177);
+            this.textBox8.Location = new System.Drawing.Point(32, 180);
             this.textBox8.Margin = new System.Windows.Forms.Padding(2);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(196, 18);
@@ -485,7 +486,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label7.Location = new System.Drawing.Point(4, 161);
+            this.label7.Location = new System.Drawing.Point(4, 164);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(28, 13);
@@ -497,7 +498,7 @@
             this.textBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox7.Location = new System.Drawing.Point(32, 159);
+            this.textBox7.Location = new System.Drawing.Point(32, 162);
             this.textBox7.Margin = new System.Windows.Forms.Padding(2);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(196, 18);
@@ -507,7 +508,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label6.Location = new System.Drawing.Point(4, 143);
+            this.label6.Location = new System.Drawing.Point(4, 146);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(28, 13);
@@ -519,7 +520,7 @@
             this.textBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox6.Location = new System.Drawing.Point(32, 141);
+            this.textBox6.Location = new System.Drawing.Point(32, 144);
             this.textBox6.Margin = new System.Windows.Forms.Padding(2);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(196, 18);
@@ -529,7 +530,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label5.Location = new System.Drawing.Point(4, 125);
+            this.label5.Location = new System.Drawing.Point(4, 128);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(28, 13);
@@ -541,7 +542,7 @@
             this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox5.Location = new System.Drawing.Point(32, 123);
+            this.textBox5.Location = new System.Drawing.Point(32, 126);
             this.textBox5.Margin = new System.Windows.Forms.Padding(2);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(196, 18);
@@ -551,7 +552,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.label4.Location = new System.Drawing.Point(4, 102);
+            this.label4.Location = new System.Drawing.Point(4, 105);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(28, 13);
@@ -563,17 +564,30 @@
             this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F);
-            this.textBox4.Location = new System.Drawing.Point(32, 101);
+            this.textBox4.Location = new System.Drawing.Point(32, 104);
             this.textBox4.Margin = new System.Windows.Forms.Padding(2);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(196, 18);
             this.textBox4.TabIndex = 31;
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.GhostWhite;
+            this.button1.Location = new System.Drawing.Point(180, 51);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(59, 21);
+            this.button1.TabIndex = 47;
+            this.button1.Text = "List Clear";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.Clear_Click);
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(239, 259);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox11);
             this.Controls.Add(this.textBox10);
             this.Controls.Add(this.label11);
@@ -606,6 +620,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Clipboard Cycler";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form4_FormClosing);
+            this.Load += new System.EventHandler(this.Form4_Load);
             this.Shown += new System.EventHandler(this.Form4_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -668,6 +683,7 @@
         public System.Windows.Forms.Label label4;
         public System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.ToolStripMenuItem cycleAndPasteToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }
 

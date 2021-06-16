@@ -23,7 +23,52 @@ namespace Clipboard_Cycler
             //Program.myIndex is the current index of myList and comboBox1.
 
             InitializeComponent();
+        }
 
+        private HotkeyCommand HotkeyComm { get; set; }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog
+            {
+                InitialDirectory = Directory.GetCurrentDirectory(),
+                Filter = "Executable Files (*.exe, *.bat)|*.exe; *.bat|All files (*.*)|*.*"
+            };
+
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                textBox1.Text = open.FileName;
+            }
+        }
+
+        private void Form5_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.WinSize = this.Size;
+            Settings.WinLoc = this.Location;
+            Settings.Form5Fields[0] = textBox1.Text;
+            Settings.Form5Fields[1] = textBox2.Text;
+            Settings.Form5Fields[2] = textBox3.Text;
+            Settings.Form5Fields[3] = textBox4.Text;
+            Settings.Form5Fields[4] = textBox5.Text;
+            Settings.Form5Fields[5] = textBox6.Text;
+            Settings.Form5Fields[6] = textBox7.Text;
+            Settings.Form5Fields[7] = textBox8.Text;
+            Settings.Form5Fields[8] = textBox9.Text;
+            Settings.Form5Fields[9] = textBox10.Text;
+            Settings.Form5Fields[10] = textBox11.Text;
+            Settings.Form5Fields[11] = textBox12.Text;
+            Settings.Save();
+            HotkeyComm?.Dispose();
+            HotkeyComm = null;
+
+            if (!Actions.SwitchingForms)
+            {
+                Environment.Exit(0);
+            }
+        }
+
+        private void Form5_Load(object sender, EventArgs e)
+        {
             Text = Program.MyTitle;
             Size = Settings.WinSize;
             Location = Settings.WinLoc;
@@ -46,46 +91,6 @@ namespace Clipboard_Cycler
             Actions.HandleFileOpen(Settings.SavedList.Replace("~`", Environment.NewLine));
         }
 
-        private HotkeyCommand HotkeyComm { get; set; }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog open = new OpenFileDialog();
-            open.InitialDirectory = Directory.GetCurrentDirectory();
-            open.Filter = "Executable Files (*.exe, *.bat)|*.exe; *.bat|All files (*.*)|*.*";
-            if (open.ShowDialog() == DialogResult.OK)
-            { textBox1.Text = open.FileName; }
-        }
-
-        private void Form5_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Settings.WinSize = this.Size;
-            Settings.WinLoc = this.Location;
-            Settings.Form5Fields[0] = textBox1.Text;
-            Settings.Form5Fields[1] = textBox2.Text;
-            Settings.Form5Fields[2] = textBox3.Text;
-            Settings.Form5Fields[3] = textBox4.Text;
-            Settings.Form5Fields[4] = textBox5.Text;
-            Settings.Form5Fields[5] = textBox6.Text;
-            Settings.Form5Fields[6] = textBox7.Text;
-            Settings.Form5Fields[7] = textBox8.Text;
-            Settings.Form5Fields[8] = textBox9.Text;
-            Settings.Form5Fields[9] = textBox10.Text;
-            Settings.Form5Fields[10] = textBox11.Text;
-            Settings.Form5Fields[11] = textBox12.Text;
-            Settings.Save();
-            if (HotkeyComm != null)
-            {
-                HotkeyComm.Dispose();
-                HotkeyComm = null;
-            }
-
-            if (!Actions.SwitchingForms)
-            {
-                Environment.Exit(0);
-            }
-        }
-
         private void Form5_Shown(object sender, EventArgs e)
         {
             Actions.SwitchingForms = false;
@@ -103,33 +108,57 @@ namespace Clipboard_Cycler
             {
                 string key = (string)optional;
                 if (key == "F1")
-                { Actions.PasteString(textBox1.Text); }
+                {
+                    Actions.PasteString(textBox1.Text);
+                }
                 else if (key == "F2")
-                { Actions.PasteString(textBox2.Text); }
+                {
+                    Actions.PasteString(textBox2.Text);
+                }
                 else if (key == "F3")
-                { Actions.PasteString(textBox3.Text); }
+                {
+                    Actions.PasteString(textBox3.Text);
+                }
                 else if (key == "F4")
-                { Actions.PasteString(textBox4.Text); }
+                {
+                    Actions.PasteString(textBox4.Text);
+                }
                 else if (key == "F5")
-                { Actions.PasteString(textBox5.Text); }
+                {
+                    Actions.PasteString(textBox5.Text);
+                }
                 else if (key == "F6")
-                { Actions.PasteString(textBox6.Text); }
+                {
+                    Actions.PasteString(textBox6.Text);
+                }
                 else if (key == "F7")
-                { Actions.PasteString(textBox7.Text); }
+                {
+                    Actions.PasteString(textBox7.Text);
+                }
                 else if (key == "F8")
-                { Actions.PasteString(textBox8.Text); }
+                {
+                    Actions.PasteString(textBox8.Text);
+                }
                 else if (key == "F9")
-                { Actions.PasteString(textBox9.Text); }
+                {
+                    Actions.PasteString(textBox9.Text);
+                }
                 else if (key == "F10")
-                { Actions.PasteString(textBox10.Text); }
+                {
+                    Actions.PasteString(textBox10.Text);
+                }
                 else if (key == "F11")
-                { Actions.PasteString(textBox11.Text); }
+                {
+                    Actions.PasteString(textBox11.Text);
+                }
                 else if (key == "F12" || key == "{Shift}F12" || key == "{CTRL}F12" || key == "{ALT}F12")
-                { Actions.PasteString(textBox12.Text); }
+                {
+                    Actions.PasteString(textBox12.Text);
+                }
             }
             else if (action == Actions.MyActions.Esc)
             {
-                Program.Mouse._DoubleClick();
+                Actions.DblClick();
             }
         }
 
@@ -138,47 +167,89 @@ namespace Clipboard_Cycler
             if (!result)
             {
                 Program.Failed = true;
-                if (key == "F1") { label1.Enabled = false; }
-                else if (key == "F2") { label2.Enabled = false; }
-                else if (key == "F3") { label3.Enabled = false; }
-                else if (key == "F4") { label4.Enabled = false; }
-                else if (key == "F5") { label5.Enabled = false; }
-                else if (key == "F6") { label6.Enabled = false; }
-                else if (key == "F7") { label7.Enabled = false; }
-                else if (key == "F8") { label8.Enabled = false; }
-                else if (key == "F9") { label9.Enabled = false; }
-                else if (key == "F10") { label10.Enabled = false; }
-                else if (key == "F11") { label11.Enabled = false; }
-                else if (key == "F12")
+                if (key == "F1")
                 {
-                    Program.Failed = false; //set to false, will try again with ctrlf12
+                    label1.Enabled = false;
+                }
+                else if (key == "F2")
+                {
+                    label2.Enabled = false;
+                }
+                else if (key == "F3")
+                {
+                    label3.Enabled = false;
+                }
+                else if (key == "F4")
+                {
+                    label4.Enabled = false;
+                }
+                else if (key == "F5")
+                {
+                    label5.Enabled = false;
+                }
+                else if (key == "F6")
+                {
+                    label6.Enabled = false;
+                }
+                else if (key == "F7")
+                {
+                    label7.Enabled = false;
+                }
+                else if (key == "F8")
+                {
+                    label8.Enabled = false;
+                }
+                else if (key == "F9")
+                {
+                    label9.Enabled = false;
+                }
+                else if (key == "F10")
+                {
+                    label10.Enabled = false;
+                }
+                else if (key == "F11")
+                {
+                    label11.Enabled = false;
+                }
+                else if (key == "F12") // Try 1
+                {
+                    Program.Failed = false;
                     label12.Enabled = false;
                 }
-                else if (key == "{CTRL}F12") { Program.Failed = false; }//try2
-                else if (key == "{Shift}F12") { Program.Failed = false; }//try3
-                else if (key == "{ALT}F12") { }//try4
+                else if (key == "{CTRL}F12") // Try 2
+                {
+                    Program.Failed = false;
+                }
+                else if (key == "{Shift}F12") // Try 3
+                {
+                    Program.Failed = false;
+                }
+                else if (key == "{ALT}F12") // Try 4
+                {
+                    // Das it
+                }
             }
 
             if (result && key == "{Shift}F12")
             {
                 label12.Enabled = true;
                 label12.Text = "{Shift}F12 =";
-                textBox12.Location = new System.Drawing.Point(69, 231);
-                textBox12.Size = new System.Drawing.Size(158, 18);
+                textBox12.Location = new System.Drawing.Point(69, textBox12.Top);
+                textBox12.Size = new System.Drawing.Size(158, textBox12.Height);
             }
             else if (result && key == "{CTRL}F12")
             {
                 label12.Enabled = true;
                 label12.Text = "{CTRL}F12 =";
-                textBox12.Location = new System.Drawing.Point(69, 231);
-                textBox12.Size = new System.Drawing.Size(158, 18);
+                textBox12.Location = new System.Drawing.Point(69, textBox12.Top);
+                textBox12.Size = new System.Drawing.Size(158, textBox12.Height);
             }
             else if (result && key == "{ALT}F12")
             {
                 label12.Enabled = true;
                 label12.Text = "{ALT}F12 =";
-                textBox12.Location = new System.Drawing.Point(69, 231);
-                textBox12.Size = new System.Drawing.Size(158, 18);
+                textBox12.Location = new System.Drawing.Point(69, textBox12.Top);
+                textBox12.Size = new System.Drawing.Size(158, textBox12.Height);
             }
 
             Program.ProgramHotkeys.Add(id, key);
@@ -192,7 +263,7 @@ namespace Clipboard_Cycler
             cycleAndPasteToolStripMenuItem.Checked = Settings.Mode == 4;
             pasteOnlyToolStripMenuItem.Checked = Settings.Mode == 5;
 
-            SetHotkeys(new string[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12" });
+            SetHotkeys(new string[12] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12" });
             if (!label12.Enabled)
             {
                 //F12 Hotkey failed. Try using an alternate F12 Hotkey:
@@ -223,16 +294,22 @@ namespace Clipboard_Cycler
                     }
                 }
             }
-            if (Program.Failed && !Settings.HideHotkeyErrors) { MessageBox.Show("One or more Hotkeys failed to register."); }
+
+            if (Program.Failed && !Settings.HideHotkeyErrors)
+            {
+                MessageBox.Show("One or more Hotkeys failed to register.");
+            }
         }
 
         private void SetHotkeys(string[] hklist)
         {
             if (HotkeyComm == null)
             {
-                HotkeyComm = new HotkeyCommand(this);
-                HotkeyComm.SetHotkeysGlobally = true;
-                HotkeyComm.SetSuppressExceptions = false;
+                HotkeyComm = new HotkeyCommand(this)
+                {
+                    SetHotkeysGlobally = true,
+                    SetSuppressExceptions = false
+                };
                 HotkeyComm.KeyActionCall += Actions.OnKeyAction; //Do work on keypress using the Action class
                 HotkeyComm.KeyRegisteredCall += Registrations;
                 HotkeyComm.KeyUnregisteredCall += UnRegistrations;
@@ -248,11 +325,86 @@ namespace Clipboard_Cycler
             HotkeyComm.StartHotkeys();
         }
 
+        private void SetMenuItems()
+        {
+            useEscToDblClickToolStripMenuItem.Checked = Settings.UseEscape;
+            useClipboardPasteToolStripMenuItem.Checked = Settings.UseSendCTRLV;
+            useSendKeysToolStripMenuItem.Checked = Settings.UseSendKeys;
+            useSendKeystrokeswDelayToolStripMenuItem.Checked = Settings.UseSendKeysDelay;
+            createUniqueListToolStripMenuItem.Checked = Settings.UniqueList;
+            sortListToolStripMenuItem.Checked = Settings.SortList;
+            trimWhitespaceToolStripMenuItem.Checked = Settings.TrimWS;
+            disableHotkeyErrorsToolStripMenuItem.Checked = Settings.HideHotkeyErrors;
+        }
+
         private void UnRegistrations(string key, short id)
         {
             Program.ProgramHotkeys.Remove(id);
         }
 
-        //Fires from Actions after an action has been completed.
+        #region MenuFunctions
+
+        private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.AboutToolStripMenuItem();
+        }
+
+        private void DisableHotkeyErrorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.DisableHotkeyErrorsToolStripMenuItem(sender);
+        }
+
+        private void ModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.ModeToolStripMenuItem(sender, this);
+        }
+
+        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
+            textBox4.Text = "";
+            textBox5.Text = "";
+            textBox6.Text = "";
+            textBox7.Text = "";
+            textBox8.Text = "";
+            textBox9.Text = "";
+            textBox10.Text = "";
+            textBox11.Text = "";
+            textBox12.Text = "";
+        }
+
+        private void OpenToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.OpenToolStripMenu(this);
+        }
+
+        private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.PauseToolStripMenuItem(sender, HotkeyComm);
+        }
+
+        private void SaveAsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.SaveAsToolStripMenu(this);
+        }
+
+        private void SaveToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.SaveToolStripMenu(this);
+        }
+
+        private void UseEscToDblClickToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.UseEscToDblClickToolStripMenuItem(sender, HotkeyComm, label1);
+        }
+
+        private void UseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenericMenuFunctions.UseToolStripMenuItem(sender);
+        }
+
+        #endregion MenuFunctions
     }
 }
