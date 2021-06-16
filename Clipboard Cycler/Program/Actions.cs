@@ -243,7 +243,17 @@ namespace Clipboard_Cycler
                             Task.Delay(5).Wait();
                         }
 
-                        Program.SendKeyComm.SendKeyPress(keyDataString.ToString());
+                        // Fixes issue with SendKey and Equals sign
+                        string send = keyDataString.ToString();
+                        if (send == "=")
+                        {
+                            Program.SendKeyComm.SendKeyPress(VirtualKeyCode.OEM_PLUS);
+                        }
+                        else
+                        {
+                            Program.SendKeyComm.SendKeyPress(send);
+                        }
+
                         keyDataString.Clear();
                     }
                 }
