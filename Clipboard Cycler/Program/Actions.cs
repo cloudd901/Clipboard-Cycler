@@ -12,7 +12,7 @@ namespace Clipboard_Cycler
 {
     public static class Actions
     {
-        private static Type myType = Type.GetType("Clipboard_Cycler.Actions");
+        private static Type MyType = Type.GetType("Clipboard_Cycler.Actions");
 
         public delegate void ActionCompleteEventHandler(MyActions action, dynamic optional = null);
 
@@ -104,7 +104,7 @@ namespace Clipboard_Cycler
                     key = "Escape";
                 }
 
-                myType.GetMethod("HandleHotkey" + key, BindingFlags.Static | BindingFlags.NonPublic).Invoke(form, null);
+                MyType.GetMethod("HandleHotkey" + key, BindingFlags.Static | BindingFlags.NonPublic).Invoke(form, null);
             }
             catch (Exception e)
             {
@@ -218,29 +218,39 @@ namespace Clipboard_Cycler
                             prev = c;
                             i++;
                         }
-                        else { Task.Delay(5).Wait(); }
+                        else
+                        {
+                            Task.Delay(5).Wait();
+                        }
 
                         Program.SendKeyComm.SendKeyPress(keyDataString.ToString());
-
                         keyDataString.Clear();
                     }
                 }
             }
             catch
             {
+                // Ignore
             }
         }
 
         public static void RunProcess(string s, string[] a = null)
         {
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = s;
-            try
+            ProcessStartInfo start = new ProcessStartInfo
             {
-                start.Arguments = $"\"{string.Join("\" \"", a)}\"";
-            }
-            catch
+                FileName = s
+            };
+
+            if (a != null)
             {
+                try
+                {
+                    start.Arguments = $"\"{string.Join("\" \"", a)}\"";
+                }
+                catch
+                {
+                    // Ignore
+                }
             }
 
             try
@@ -260,10 +270,10 @@ namespace Clipboard_Cycler
                 Settings.Mode = m;
                 Settings.Save();
                 SwitchingForms = true;
-                f.Close();
+                f?.Close();
                 try
                 {
-                    f.Dispose();
+                    f?.Dispose();
                 }
                 catch
                 {
@@ -315,6 +325,7 @@ namespace Clipboard_Cycler
             }
             catch
             {
+                // Ignore
             }
 
             newDataCount = newDataCount == 0 ? myList.Count : newDataCount - myList.Count;

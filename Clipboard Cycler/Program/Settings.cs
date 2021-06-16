@@ -6,16 +6,18 @@ namespace Clipboard_Cycler
 {
     public static class Settings
     {
-        private static bool hideHotkeyErrors = false;
+        // Using private fields for out parsing.
+
+        private static bool hideHotkeyErrors;
         private static IniFile ini;
         private static short mode = 1;
-        private static bool sortList = false;
+        private static bool sortList;
         private static bool trimWS = true;
-        private static bool uniqueList = false;
+        private static bool uniqueList;
         private static bool useEscape = true;
-        private static bool useSendCTRLV = false;
+        private static bool useSendCTRLV;
         private static bool useSendKeys = true;
-        private static bool useSendKeysDelay = false;
+        private static bool useSendKeysDelay;
         private static Point winPos = new Point(0, 0);
         private static Size winSize = new Size(265, 167);
 
@@ -40,13 +42,18 @@ namespace Clipboard_Cycler
             {
                 try
                 {
-                    string[] temp = ini.Read("WinLoc").Replace("{X=", "").Replace("Y=", "").Replace("}", "").Split(',');
+                    string[] temp = ini.Read("WinLoc")
+                        .Replace("{X=", "")
+                        .Replace("Y=", "")
+                        .Replace("}", "")
+                        .Split(',');
                     winPos = new Point(int.Parse(temp[0]), int.Parse(temp[1]));
                 }
                 catch
                 {
                     winPos = new Point(0, 0);
                 }
+
                 return winPos;
             }
             set
@@ -61,13 +68,18 @@ namespace Clipboard_Cycler
             {
                 try
                 {
-                    string[] temp = ini.Read("WinSize").Replace("{Width=", "").Replace("Height=", "").Replace("}", "").Replace(" ", "").Split(',');
+                    string[] temp = ini.Read("WinSize")
+                        .Replace("{Width=", "")
+                        .Replace("Height=", "")
+                        .Replace("}", "")
+                        .Replace(" ", "").Split(',');
                     winSize = new Size(int.Parse(temp[0]), int.Parse(temp[1]));
                 }
                 catch
                 {
                     winSize = new Size(0, 0);
                 }
+
                 return winSize;
             }
             set
@@ -79,13 +91,21 @@ namespace Clipboard_Cycler
         public static void Initialize()
         {
             string iniLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + Program.MyTitle;
-            if (!Directory.Exists(iniLocation)) { Directory.CreateDirectory(iniLocation); }
+            if (!Directory.Exists(iniLocation))
+            {
+                Directory.CreateDirectory(iniLocation);
+            }
+
             ini = new IniFile($"{iniLocation}\\{Program.MyTitle}.ini");
 
             bool.TryParse(ini.Read("UseEscape"), out useEscape);
             bool.TryParse(ini.Read("UseSendCTRLV"), out useSendCTRLV);
             bool.TryParse(ini.Read("UseSendKeysDelay"), out useSendKeysDelay);
-            if (!bool.TryParse(ini.Read("UseSendKeys"), out useSendKeys)) { if (!useSendCTRLV && !useSendKeysDelay) { useSendKeys = true; } }
+            if (!bool.TryParse(ini.Read("UseSendKeys"), out useSendKeys) && !useSendCTRLV && !useSendKeysDelay)
+            {
+                useSendKeys = true;
+            }
+
             bool.TryParse(ini.Read("HideHotkeyErrors"), out hideHotkeyErrors);
             bool.TryParse(ini.Read("UniqueList"), out uniqueList);
             bool.TryParse(ini.Read("SortList"), out sortList);
@@ -94,13 +114,40 @@ namespace Clipboard_Cycler
             SavedList = SavedString.Replace("~`", Environment.NewLine);
 
             string[] f2temp = ini.Read("Form2Fields").Split('`');
-            if (f2temp.Length == 5) { for (int i = 0; i < 5; i++) { Form2Fields[i] = f2temp[i]; } }
+            if (f2temp.Length == 5)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Form2Fields[i] = f2temp[i];
+                }
+            }
+
             string[] f3temp = ini.Read("Form3Fields").Split('`');
-            if (f3temp.Length == 5) { for (int i = 0; i < 5; i++) { Form3Fields[i] = f3temp[i]; } }
+            if (f3temp.Length == 5)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Form3Fields[i] = f3temp[i];
+                }
+            }
+
             string[] f4temp = ini.Read("Form4Fields").Split('`');
-            if (f4temp.Length == 8) { for (int i = 0; i < 8; i++) { Form4Fields[i] = f4temp[i]; } }
+            if (f4temp.Length == 8)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    Form4Fields[i] = f4temp[i];
+                }
+            }
+
             string[] f5temp = ini.Read("Form5Fields").Split('`');
-            if (f5temp.Length == 12) { for (int i = 0; i < 12; i++) { Form5Fields[i] = f5temp[i]; } }
+            if (f5temp.Length == 12)
+            {
+                for (int i = 0; i < 12; i++)
+                {
+                    Form5Fields[i] = f5temp[i];
+                }
+            }
 
             short.TryParse(ini.Read("Mode"), out mode);
             if (mode < 1 || mode > 5)
