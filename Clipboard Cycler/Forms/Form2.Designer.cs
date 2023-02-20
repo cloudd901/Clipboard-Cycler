@@ -538,6 +538,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.BackColor = System.Drawing.Color.GhostWhite;
             this.button2.Location = new System.Drawing.Point(180, 54);
             this.button2.Name = "button2";

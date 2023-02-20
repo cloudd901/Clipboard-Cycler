@@ -136,7 +136,7 @@ namespace Clipboard_Cycler
         {
             try
             {
-                Clipboard.SetText(s);
+                Clipboard.SetText(Settings.TrimWS ? s.Trim() : s);
                 StringBuilder keyDataString = new StringBuilder();
                 if (Settings.UseSendCTRLV)
                 {
@@ -326,7 +326,7 @@ namespace Clipboard_Cycler
                 {
                     foreach (string s in data)
                     {
-                        myList.Add(s);
+                        myList.Add(Settings.TrimWS ? s.Trim() : s);
                     }
 
                     if (Settings.SortList)
